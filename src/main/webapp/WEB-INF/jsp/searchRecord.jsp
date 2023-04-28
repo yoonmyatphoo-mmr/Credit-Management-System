@@ -129,8 +129,8 @@
             <div class="container bg-white col-md-10 mb-5 shadow-sm bg-opacity-75 p-5">
               <form action="/searchRecordById",method="POST",modelAttribute="searchRecord">
                 <div class="col-md-10 offset-1 mb-3">
-                    <label for="studentId" class="mb-1">Student ID</label>
-                    <input type="text" path="studentId" id="studentId" name="studentId" class="form-control"
+                    <label for="studentIdentity" class="mb-1">Student ID</label>
+                    <input type="text" path="studentIdentity" id="studentIdentity" name="studentIdentity" class="form-control"
                         placeholder="Enter student ID...">
                 </div>
                 <div class="col-md-8 col-lg-10 offset-1">

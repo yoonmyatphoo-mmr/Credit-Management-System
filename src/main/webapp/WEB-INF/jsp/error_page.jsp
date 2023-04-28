@@ -35,7 +35,7 @@ a:active {
     <h1>Please retry your action again.</h1>
     <a href="/userAccounts" text-align="center" ><b><h1><img src="https://img.icons8.com/external-bearicons-blue-bearicons/50/000000/external-sign-up-call-to-action-bearicons-blue-bearicons-1.png"/>Register</h1></b></a>
     <br>
-    <a href="/login" text-align="center"  ><b><h1><img src="https://img.icons8.com/external-bearicons-blue-bearicons/50/000000/external-login-call-to-action-bearicons-blue-bearicons-1.png"/>Login</h1></b></a>
+    <a href="/creditLogin" text-align="center"  ><b><h1><img src="https://img.icons8.com/external-bearicons-blue-bearicons/50/000000/external-login-call-to-action-bearicons-blue-bearicons-1.png"/>Login</h1></b></a>
 </div>
 </body>
 </html>

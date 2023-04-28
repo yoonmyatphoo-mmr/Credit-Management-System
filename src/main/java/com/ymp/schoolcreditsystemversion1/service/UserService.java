@@ -1,8 +1,6 @@
 package com.ymp.schoolcreditsystemversion1.service;
 
-import com.ymp.schoolcreditsystemversion1.model.entity.StudentRecord;
-import com.ymp.schoolcreditsystemversion1.model.entity.Subject;
-import com.ymp.schoolcreditsystemversion1.model.entity.User;
+import com.ymp.schoolcreditsystemversion1.model.entity.*;
 import com.ymp.schoolcreditsystemversion1.model.request.UserTechStuData;
 import com.ymp.schoolcreditsystemversion1.model.response.RequireDataResponse;
 
@@ -22,11 +20,13 @@ public interface UserService {
   RequireDataResponse getRequireData();
   Subject insertSubject(Subject subject);
   StudentRecord addRecord(StudentRecord studentRecord);
-
   List<Subject> getSubjectList(Long yearId, Long semesterId, Long majorId);
- /* List<ShowResult> showResult();
+  Object[] getYearSemeMajorName(String studentId);
+  List<ShowResult> searchRecord(String studentId);
 
-  List<ShowResult> searchRecord(String studentId);*/
+  String changePassword(Long id,String oldPassword,String password);
+
+  List<StudentDetail> viewUserData(Long year, Long semester, Long major);
 
 
 

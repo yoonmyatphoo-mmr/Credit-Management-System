@@ -20,7 +20,7 @@ public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String description;
+    private String semester;
     private boolean deleted;
     private Date createdDate;
     private Date updatedDate;

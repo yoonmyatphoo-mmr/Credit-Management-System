@@ -27,9 +27,10 @@ public class StudentDetail {
 
     private Long yearId;
 
-    private Long majorId;
-
     private Long semesterId;
 
+    private Long majorId;
+
     private Long userId;
+
 }

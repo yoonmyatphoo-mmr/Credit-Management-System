@@ -138,9 +138,14 @@
                 <div class="col-md-12">
                     <!-- <h3 class="description">Your content here</h3> -->
                     <div class="container bg-white col-md-10 mb-5 shadow-sm bg-opacity-75 p-5">
-                        <form action="/insertSubject" , method="post" modelAttribute="addSubject">
 
-                            <div class="col-md-10 offset-1 mb-3">
+                        <form id="add-subject-form" action="/insertSubject" method="post" modelAttribute="addSubject">
+
+                            <c:if test="${not empty successMessage}">
+                            <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
+                            </c:if>
+
+                        <div class="col-md-10 offset-1 mb-3">
                                 <label for="subjectCode" class="mb-1">subject Code</label>
                                 <input path="subjectCode" type="text" id="subjectCode" name="subjectCode"
                                        class="form-control"
@@ -179,42 +184,6 @@
                                     <option value=3>Computer Science and Technology</option>
                                 </select>
                             </div>
-                            <%--<div class="col-md-10 offset-1 mb-3">
-                                <label for="subject1" class="mb-1">Subject 1</label>
-                                <input path="subject1" type="text" id="subject1" name="subject1" class="form-control"
-                                       placeholder="Enter subject name...">
-                            </div>
-                            <div class="col-md-10 offset-1 mb-3">
-                                <label for="subject2" class="mb-1">Subject 2</label>
-                                <input path="subject2" type="text" id="subject2" name="subject2" class="form-control"
-                                       placeholder="Enter subject name...">
-                            </div>
-                            <div class="col-md-10 offset-1 mb-3">
-                                <label for="subject3" class="mb-1">Subject 3</label>
-                                <input path="subject3" type="text" id="subject3" name="subject3" class="form-control"
-                                       placeholder="Enter subject name...">
-                            </div>
-                            <div class="col-md-10 offset-1 mb-3">
-                                <label for="subject4" class="mb-1">Subject 4</label>
-                                <input path="subject4" type="text" id="subject4" name="subject4" class="form-control"
-                                       placeholder="Enter subject name...">
-                            </div>
-                            <div class="col-md-10 offset-1 mb-3">
-                                <label for="subject5" class="mb-1">Subject 5</label>
-                                <input path="subject5" type="text" id="subject5" name="subject5" class="form-control"
-                                       placeholder="Enter subject name...">
-                            </div>
-                            <div class="col-md-10 offset-1 mb-3">
-                                <label for="subject6" class="mb-1">Subject 6</label>
-                                <input path="subject6" type="text" id="subject6" name="subject6" class="form-control"
-                                       placeholder="Enter subject name...">
-                            </div>
-                            <div class="col-md-10 offset-1 mb-3">
-                                <label for="subject7" class="mb-1">Subject 7</label>
-                                <input path="subject7" type="text" id="subject7" name="subject7" class="form-control"
-                                       placeholder="Enter subject name...">
-                            </div>
-                            --%>
                             <div class="col-md-8 col-lg-10 offset-1">
                                 <input type="submit" value="Add" class="btn btn-success mt-3">
                             </div>
@@ -225,24 +194,6 @@
             </div>
         </div>
     </div>
-    <!-- <footer class="footer" style="position: absolute; bottom: 0; width: -webkit-fill-available;">
-      <div class="container-fluid">
-        <div class="row">
-          <nav class="footer-nav">
-            <ul>
-              <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
-              <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-              <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-            </ul>
-          </nav>
-          <div class="credits ml-auto">
-            <span class="copyright">
-              © 2020, made with <i class="fa fa-heart heart"></i> by Creative Tim
-            </span>
-          </div>
-        </div>
-      </div>
-    </footer> -->
 </div>
 </div>
 <!--   Core JS Files   -->
@@ -263,6 +214,20 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        // code to be executed when the DOM is loaded
+        var submitBtn = document.getElementById("submit-btn");
+        submitBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById("add-subject-form").submit();
+        setTimeout(function() {
+        var successMessage = document.getElementById("successMessage");
+        successMessage.style.display = "block";
+    }, 2000);
+    });
+    });
+</script>
 
 </body>
 

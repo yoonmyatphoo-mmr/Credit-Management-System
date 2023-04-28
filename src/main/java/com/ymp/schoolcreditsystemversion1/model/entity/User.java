@@ -1,6 +1,8 @@
 package com.ymp.schoolcreditsystemversion1.model.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -14,6 +16,7 @@ import java.sql.Date;
 @Data
 // using lombok to get getter and setter method which is needed to inject data from properties file into fields by setter method, getter method is need for access field value from other class.
 @Entity
+@RequiredArgsConstructor
 @Table(name = "userdata")
 public class User {
 

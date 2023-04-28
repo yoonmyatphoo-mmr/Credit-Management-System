@@ -1,8 +1,13 @@
 package com.ymp.schoolcreditsystemversion1.repository;
 
+import com.ymp.schoolcreditsystemversion1.model.entity.ShowResult;
 import com.ymp.schoolcreditsystemversion1.model.entity.StudentRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author: Yoon Myat Phoo
@@ -12,4 +17,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface StudentRecordRepository extends JpaRepository<StudentRecord,Long> {
+    List<StudentRecord> findByStudentIdentity(String studentId);
+
+
+    /*@Query("SELECT SUM(s.creditUnit) FROM SubjectForStudent s WHERE s.studentIdentity = :studentIdentity AND s.semesterId = :semester")
+    int getTotalCreditUnitsForSemesterAndStudent(@Param("studentIdentity") String studentIdentity, @Param("semester") String semester);
+
+    @Query("SELECT SUM(s.gradePoint) FROM StudentRecord s WHERE s.studentIdentity = :studentIdentity AND s.semesterId = :semester")
+    int getTotalGradePointForSemesterAndStudent(@Param("studentIdentity") String studentIdentity, @Param("semester") String semester);
+*/
+
 }

@@ -25,7 +25,7 @@ public class SubjectResponse {
 //        super();
     }
 
-    public SubjectResponse(List<Subject> subjectList) {
+    public SubjectResponse(List<SubjectName> subjectList) {
         this.subjectList = subjectList;
     }*/
 }

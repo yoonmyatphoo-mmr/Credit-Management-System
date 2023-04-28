@@ -3,12 +3,11 @@ package com.ymp.schoolcreditsystemversion1.model.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author Yoon Myat Phoo
@@ -26,21 +25,22 @@ public class StudentRecord {
     private Long id;
     private String name;
     private String studentIdentity;
-    private String year;
-    private String major;
-    private String semester;
-    private String subjectName;
-    private int totalRollCall;
-    private int attendance;
-    private int totalTutoTest;
-    private int totalTutoAttendance;
-    private int mark;
-    private int creditUnit;
-    private int grade;
-    private double gradeScore;
-    private double gradePoint;
+    private String yearId;
+    private String majorId;
+    private String semesterId;
+    private String phoneNo;
+    private int totalCreditUnit;
+    private double totalGradePoint;
+    private double cumulativeGPA;
     private boolean deleted;
     private LocalDate createdDate;
-    private Date updatedDate;
+    private String updatedDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentRecord")
+    private List<SubjectForStudent> subjectForStudentList = new ArrayList<>();
+
+    public void addSubjectForStudent(SubjectForStudent subjectForStudent) {
+        subjectForStudentList.add(subjectForStudent);
+        subjectForStudent.setStudentRecord(this);
+    }//initialized with an empty list to avoid NullPointerException when adding new subject records to a student
 
 }

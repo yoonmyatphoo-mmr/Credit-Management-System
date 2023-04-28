@@ -2,6 +2,11 @@ package com.ymp.schoolcreditsystemversion1.model.request;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 
 /**
  * @Author Yoon Myat Phoo

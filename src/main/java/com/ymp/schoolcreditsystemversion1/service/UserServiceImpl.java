@@ -6,12 +6,21 @@ import com.ymp.schoolcreditsystemversion1.model.request.UserTechStuData;
 import com.ymp.schoolcreditsystemversion1.model.response.*;
 import com.ymp.schoolcreditsystemversion1.repository.*;
 import com.ymp.schoolcreditsystemversion1.util.PasswordGenerationUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -22,7 +31,8 @@ import java.util.List;
  */
 @Service
 @Slf4j // for logging by using lombok
-public class UserServiceImpl implements UserService {
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
@@ -46,6 +56,31 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     StudentRecordRepository studentRecordRepository;
+
+    @Autowired
+    ShowResultRepository showResultRepository;
+
+    @Autowired
+    SubjectForStudentRepository subjectForStudentRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User users = (User) userRepository.findByEmail(email);
+        if (users == null) {
+            log.error("User not found by email: {}", email);
+            throw new UsernameNotFoundException("User not found in the database");
+        } else {
+            log.info("user is existed in the database: {}", email);
+        }
+        if (users.getRoleId() == null) {
+            log.warn("role not found.");
+            return new org.springframework.security.core.userdetails.User(users.getEmail(), users.getPassword(), new ArrayList<>());
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        return new org.springframework.security.core.userdetails.User(users.getEmail(), users.getPassword(), authorities);
+    }
 
     @Override
     public User login(String email, String password) {
@@ -92,41 +127,77 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public StudentRecord addRecord(StudentRecord studentRecord) {
-        studentRecord.getName();
-        studentRecord.getAttendance();
-        studentRecord.getYear();
-        studentRecord.getSemester();
-        studentRecord.getMajor();
-        studentRecord.getSubjectName();
-        studentRecord.getTotalRollCall();
-        studentRecord.getAttendance();
-        studentRecord.getTotalTutoTest();
-        studentRecord.getTotalTutoAttendance();
-        studentRecord.getMark();
-        studentRecord.getCreditUnit();
-        studentRecord.getStudentIdentity();
-        studentRecord.getGrade();
-        studentRecord.getGradeScore();
-        studentRecord.getGradePoint();
+
         studentRecord.setDeleted(false);
         studentRecord.setCreatedDate(LocalDate.now());
         studentRecord.setUpdatedDate(null);
 
+        List<SubjectForStudent> subjectMarks = studentRecord.getSubjectForStudentList();
+        int totalCreditUnit = 0;
+        double totalGradePoint = 0.0;
+        List<SubjectForStudent> savedSubjectForStudents = new ArrayList<>(); // create a new list to store the saved SubjectForStudent objects
+        for (SubjectForStudent subjectMark : subjectMarks) {
+            subjectMark.setDeleted(false);
+            subjectMark.setCreatedDate(LocalDate.now());
+            subjectMark.setUpdatedDate(null);
+            subjectMark.setStudentRecord(studentRecord);
+            int mark = subjectMark.getMark();
+            GradeAndScore gradeAndScore = setGradeAndScore(mark);
+            subjectMark.setGrade(gradeAndScore.getGrade());
+            subjectMark.setGradeScore(gradeAndScore.getGradeScore());
+            subjectMark.setGradePoint(subjectMark.getCreditUnit() * subjectMark.getGradeScore());
+            totalCreditUnit += subjectMark.getCreditUnit();
+            totalGradePoint += subjectMark.getGradePoint();
+            savedSubjectForStudents.add(subjectForStudentRepository.save(subjectMark)); // save the SubjectForStudent object and add it to the new list
+        }
 
-        studentRecord.getSemester();
+        studentRecord.setTotalCreditUnit(totalCreditUnit);
+        studentRecord.setTotalGradePoint(totalGradePoint);
+        studentRecord.setSubjectForStudentList(savedSubjectForStudents); // set the updated SubjectForStudent list to the studentRecord object
 
-        studentRecord.getMajor();
+        studentRecordRepository.save(studentRecord);
+        return studentRecord;
 
-
-
-        return null;
     }
 
     @Override
     public List<Subject> getSubjectList(Long yearId, Long semesterId, Long majorId) {
-       List<Subject> subject = subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(yearId,semesterId,majorId);
-       return subject;
+        List<Subject> subject = subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(yearId, semesterId, majorId);
+        return subject;
+    }
+
+    @Override
+    public Object[] getYearSemeMajorName(String studentId) {
+        Object[] getYearSemeMajorName = studentDetailRepository.findYearMajorSemesterAndNameByStudentIdentity(studentId);
+        return getYearSemeMajorName;
+    }
+
+    @Override
+    public List<ShowResult> searchRecord(String studentId) {
+        List<ShowResult> showResults = showResultRepository.findByStudentIdentity(studentId);
+        return showResults;
+    }
+
+    @Override
+    public String changePassword(Long id, String oldPassword, String newPassword) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        if (!user.getPassword().equals(oldPassword)) {
+            return "invalidPassword";
+        }
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        return "success";
+    }
+
+    @Override
+    public List<StudentDetail> viewUserData(Long year, Long semester, Long major) {
+        List<StudentDetail> studentDetailList = studentDetailRepository.findByYearIdAndSemesterIdAndMajorId(year, semester, major);
+        return studentDetailList;
     }
 
 
@@ -137,11 +208,18 @@ public class UserServiceImpl implements UserService {
 
         try {
             List<User> userEmailValid = userRepository.findByEmail(userTechStuData.getEmail());
+            List<StudentDetail> studentId = studentDetailRepository.findByStudentIdentity(userTechStuData.getStudentId());
+            List<TeacherDetails> teacherId = teacherDetailRepository.findByTeacherIdentity(userTechStuData.getTeacherId());
             if (!userEmailValid.isEmpty()) {
                 System.out.println("Duplicate user");
                 return "duplicate user";
+            } else if (!studentId.isEmpty()) {
+                System.out.println("StudentID have been registered!");
+                return "StudentID have been registered!";
+            } else if (!teacherId.isEmpty()) {
+                System.out.println("TeacherID have been registered!");
+                return "TeacherID have been registered!";
             }
-
             User userModel = new User();
             userModel.setEmail(userTechStuData.getEmail());
             userModel.setAddress(userTechStuData.getAddress());

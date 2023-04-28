@@ -119,9 +119,9 @@ pageEncoding="ISO-8859-1"%>
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                  <a class="dropdown-item" href="/profile">Profile</a>
+                  <a class="dropdown-item" href="/changePassword">Change Password</a>
+                  <a class="dropdown-item" href="#">Logout</a>
                 </div>
               </li>
             </ul>
@@ -136,7 +136,17 @@ pageEncoding="ISO-8859-1"%>
             <div class="container bg-white col-md-10 mb-5 shadow-sm bg-opacity-75 p-5">
                 <form action="/saveUserData", method="post" modelAttribute="saveUserData">
                     <c:if test="${not empty successMessage}">
-                        <div id="serverError" class="successMessage">${successMessage}</div>
+                        <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
+                    </c:if>
+                    <c:if test="${not empty studentIdError}">
+                        <div id="studentIdError" class="alert alert-danger" role="alert">${studentIdError}</div>
+                    </c:if>
+                    <c:if test="${not empty teacherIdError}">
+                        <div id="teacherIdError" class="alert alert-danger" role="alert">${teacherIdError}</div>
+                    </c:if>
+                    <br>
+                    <c:if test="${not empty serverError}">
+                        <div id="errorMessage" class="alert alert-danger" role="alert">${serverError}</div>
                     </c:if>
                     <div class="col-md-10 offset-1 mb-3">
                         <label for="name" class="mb-1">User Name</label>
@@ -239,7 +249,7 @@ pageEncoding="ISO-8859-1"%>
            
     </div>
           <div class="col-md-8 col-lg-10 offset-1">
-            <input type="submit" value="Register" class="btn btn-success mt-3">
+              <input type="submit" value="Register" class="btn btn-success mt-3">
              <%-- <button id="register" onclick="message()" value="Register" class="btn btn-success mt-3"></butt--%>
                    <%-- <div class="message">
                         <div class="success"id="success">Successfully save!</div>

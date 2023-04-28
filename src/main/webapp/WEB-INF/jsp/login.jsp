@@ -46,7 +46,7 @@
           <div class="col-md-12">
             <!-- <h3 class="description">Your content here</h3> -->
             <div class="container bg-white col-md-10 mb-5 shadow bg-opacity-75 p-5">
-                <form action="/login", method="post" modelAttribute="login">
+                <form action="/creditLogin", method="post" modelAttribute="login">
                 <div class="col-md-10 offset-1 mb-3">
                     <label for="email" class="mb-1">Username</label>
                     <input type="text" path="email" id="email" name="email" class="form-control"
