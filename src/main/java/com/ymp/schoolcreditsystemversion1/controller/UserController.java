@@ -53,6 +53,7 @@ public class UserController {
 
         return "addSubject";
     }
+
     @GetMapping("/profile")
     public String getProfilePage(Model model) {
         return "profile";
@@ -78,9 +79,14 @@ public class UserController {
 
     @GetMapping("/viewStudent")
     public String viewStudent() {
-        log.info("Enter viewStudent GetMethod..");
         return "viewStudent";
     }
+
+    @GetMapping("/viewSubject")
+    public String viewSubject() {
+        return "viewSubject";
+    }
+
     @RequestMapping(value = "/saveUserData", method = RequestMethod.POST)
     public String saveUserData(@ModelAttribute("saveUserData") UserTechStuData userModel, BindingResult result, Model model, HttpServletRequest request) {
 
@@ -244,11 +250,21 @@ public class UserController {
     public String viewStudentData(Model model, @RequestParam Long yearId, @RequestParam Long semesterId, @RequestParam Long majorId) {
         log.info("Enter viewStudentData....");
         List<StudentDetail> studentDetailList = userService.viewStudentData(yearId, semesterId, majorId);
-        log.info("userTechStuDataList: {}", studentDetailList);
+        log.info("StudentDataList: {}", studentDetailList);
         model.addAttribute("viewStudent", studentDetailList);
         log.info("Exit viewStudentData.....");
         return "viewStudent";
 
+    }
+
+    @PostMapping("/viewSubjectList")
+    public String viewSubjectData(Model model, @RequestParam Long yearId, @RequestParam Long semesterId, @RequestParam Long majorId) {
+        log.info("Enter viewSubjectData...");
+        List<Subject> subjectList = userService.viewSubjectData(yearId, semesterId, majorId);
+        log.info("SubjectList: {}",subjectList);
+        model.addAttribute("viewSubject", subjectList);
+        log.info("Exit viewSubjectData..");
+        return "viewSubject";
     }
 
 }

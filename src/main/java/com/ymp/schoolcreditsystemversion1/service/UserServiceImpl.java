@@ -203,6 +203,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return studentDetailList;
     }
 
+    @Override
+    public List<Subject> viewSubjectData(Long year, Long semester, Long major) {
+        List<Subject> subjectList = subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(year,semester,major);
+        return subjectList;
+    }
+
 
     @Override
     public String saveUserData(UserTechStuData userTechStuData) {

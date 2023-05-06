@@ -74,6 +74,12 @@
                         <p>Search Records</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/viewStudent">
+                        <i class="nc-icon nc-zoom-split"></i>
+                        <p>View Student Datas</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

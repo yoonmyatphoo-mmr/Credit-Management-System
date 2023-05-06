@@ -79,7 +79,13 @@ pageEncoding="ISO-8859-1"%>
             <li class="nav-item">
                 <a class="nav-link" href="/viewStudent">
                     <i class="nc-icon nc-zoom-split"></i>
-                    <p>View Student Records</p>
+                    <p>View Student Datas</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/viewSubject">
+                    <i class="nc-icon nc-zoom-split"></i>
+                    <p>View Subject List</p>
                 </a>
             </li>
           </ul>

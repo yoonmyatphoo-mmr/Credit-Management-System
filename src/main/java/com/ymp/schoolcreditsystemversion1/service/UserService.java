@@ -34,6 +34,8 @@ public interface UserService {
 
   List<StudentDetail> viewStudentData(Long year, Long semester, Long major);
 
+  List<Subject> viewSubjectData(Long year, Long semester, Long major);
+
 
 
 
