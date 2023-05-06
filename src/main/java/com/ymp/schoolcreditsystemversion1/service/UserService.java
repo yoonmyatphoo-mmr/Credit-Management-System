@@ -4,7 +4,10 @@ import com.ymp.schoolcreditsystemversion1.model.entity.*;
 import com.ymp.schoolcreditsystemversion1.model.request.UserTechStuData;
 import com.ymp.schoolcreditsystemversion1.model.response.RequireDataResponse;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: Yoon Myat Phoo
@@ -19,14 +22,18 @@ public interface UserService {
   User login(String email, String password);
   RequireDataResponse getRequireData();
   Subject insertSubject(Subject subject);
-  StudentRecord addRecord(StudentRecord studentRecord);
+ StudentRecord addRecord(StudentRecord studentRecord);
+
   List<Subject> getSubjectList(Long yearId, Long semesterId, Long majorId);
   Object[] getYearSemeMajorName(String studentId);
   List<ShowResult> searchRecord(String studentId);
 
+ List<StudentRecord> searchById(String studentId);
+
   String changePassword(Long id,String oldPassword,String password);
 
-  List<StudentDetail> viewUserData(Long year, Long semester, Long major);
+  List<StudentDetail> viewStudentData(Long year, Long semester, Long major);
+
 
 
 

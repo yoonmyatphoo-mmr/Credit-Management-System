@@ -19,9 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: Yoon Myat Phoo
@@ -61,7 +59,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     ShowResultRepository showResultRepository;
 
     @Autowired
-    SubjectForStudentRepository subjectForStudentRepository;
+    private SubjectForStudentRepository subjectForStudentRepository;
+
 
     private final PasswordEncoder passwordEncoder;
 
@@ -104,9 +103,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<Year> yearList = yearRepository.findByDeleted(false);
         //log.info("yearList: {}",yearList);
         List<Major> majorList = majorRepository.findByDeleted(false);
-        return new RequireDataResponse(
-                new YearResponse(yearList), new MajorResponse(majorList),
-                new SemesterResponse(semesterList), new SubjectResponse(subjectList));
+        return new RequireDataResponse(new YearResponse(yearList), new MajorResponse(majorList), new SemesterResponse(semesterList), new SubjectResponse(subjectList));
     }
 
     @Override
@@ -126,41 +123,40 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return addedSubject;
     }
 
+
     @Override
-    @Transactional
     public StudentRecord addRecord(StudentRecord studentRecord) {
+        Map<String, Integer> subjectMarks = studentRecord.getSubjectMarks();
+        Map<String, Integer> subjectCreditUnits = studentRecord.getSubjectCreditUnits();
 
         studentRecord.setDeleted(false);
         studentRecord.setCreatedDate(LocalDate.now());
         studentRecord.setUpdatedDate(null);
+        List<SubjectForStudent> subjects = new ArrayList<>();
 
-        List<SubjectForStudent> subjectMarks = studentRecord.getSubjectForStudentList();
-        int totalCreditUnit = 0;
-        double totalGradePoint = 0.0;
-        List<SubjectForStudent> savedSubjectForStudents = new ArrayList<>(); // create a new list to store the saved SubjectForStudent objects
-        for (SubjectForStudent subjectMark : subjectMarks) {
-            subjectMark.setDeleted(false);
-            subjectMark.setCreatedDate(LocalDate.now());
-            subjectMark.setUpdatedDate(null);
-            subjectMark.setStudentRecord(studentRecord);
-            int mark = subjectMark.getMark();
-            GradeAndScore gradeAndScore = setGradeAndScore(mark);
-            subjectMark.setGrade(gradeAndScore.getGrade());
-            subjectMark.setGradeScore(gradeAndScore.getGradeScore());
-            subjectMark.setGradePoint(subjectMark.getCreditUnit() * subjectMark.getGradeScore());
-            totalCreditUnit += subjectMark.getCreditUnit();
-            totalGradePoint += subjectMark.getGradePoint();
-            savedSubjectForStudents.add(subjectForStudentRepository.save(subjectMark)); // save the SubjectForStudent object and add it to the new list
+        for (Map.Entry<String, Integer> entry : subjectMarks.entrySet()) {
+            String subjectName = entry.getKey();
+            int marks = entry.getValue();
+
+            GradeAndScore gradeAndScore = setGradeAndScore(marks);
+            double gradeScore = gradeAndScore.getGradeScore();
+            String grade = gradeAndScore.getGrade();
+
+            int creditUnits = subjectCreditUnits.getOrDefault(subjectName, 0);
+            double gradePoint = creditUnits * gradeScore;
+
+            SubjectForStudent subjectForStudent = new SubjectForStudent(subjectName, marks, creditUnits, grade, gradeScore, gradePoint);
+            log.info(subjectForStudent.toString());
+            subjectForStudentRepository.save(subjectForStudent); // save SubjectForStudent entity first
+            subjectForStudent.setStudentRecord(studentRecord);
+            subjects.add(subjectForStudent);
         }
 
-        studentRecord.setTotalCreditUnit(totalCreditUnit);
-        studentRecord.setTotalGradePoint(totalGradePoint);
-        studentRecord.setSubjectForStudentList(savedSubjectForStudents); // set the updated SubjectForStudent list to the studentRecord object
-
-        studentRecordRepository.save(studentRecord);
-        return studentRecord;
-
+        studentRecord.setSubjects(subjects);
+        return studentRecordRepository.save(studentRecord); // save StudentRecord entity last
     }
+
+
 
     @Override
     public List<Subject> getSubjectList(Long yearId, Long semesterId, Long majorId) {
@@ -181,6 +177,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
+    public List<StudentRecord> searchById(String studentId) {
+        List<StudentRecord> studentRecords = studentRecordRepository.findByStudentIdentityWithSubject(studentId);
+        return studentRecords;
+    }
+
+    @Override
     public String changePassword(Long id, String oldPassword, String newPassword) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {
@@ -195,7 +198,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<StudentDetail> viewUserData(Long year, Long semester, Long major) {
+    public List<StudentDetail> viewStudentData(Long year, Long semester, Long major) {
         List<StudentDetail> studentDetailList = studentDetailRepository.findByYearIdAndSemesterIdAndMajorId(year, semester, major);
         return studentDetailList;
     }

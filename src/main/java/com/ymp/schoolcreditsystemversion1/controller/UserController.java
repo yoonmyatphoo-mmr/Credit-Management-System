@@ -1,7 +1,9 @@
 package com.ymp.schoolcreditsystemversion1.controller;
 
-import com.ymp.schoolcreditsystemversion1.model.entity.*;
-
+import com.ymp.schoolcreditsystemversion1.model.entity.StudentDetail;
+import com.ymp.schoolcreditsystemversion1.model.entity.StudentRecord;
+import com.ymp.schoolcreditsystemversion1.model.entity.Subject;
+import com.ymp.schoolcreditsystemversion1.model.entity.User;
 import com.ymp.schoolcreditsystemversion1.model.request.UserTechStuData;
 import com.ymp.schoolcreditsystemversion1.model.response.RequireDataResponse;
 import com.ymp.schoolcreditsystemversion1.service.UserService;
@@ -51,13 +53,13 @@ public class UserController {
 
         return "addSubject";
     }
-
     @GetMapping("/profile")
-    public String getProfilePage(Model model){
+    public String getProfilePage(Model model) {
         return "profile";
     }
+
     @GetMapping("/changePassword")
-    public String getChangePassword(Model model){
+    public String getChangePassword(Model model) {
         return "changePassword";
     }
 
@@ -74,6 +76,11 @@ public class UserController {
         return "searchRecord";
     }
 
+    @GetMapping("/viewStudent")
+    public String viewStudent() {
+        log.info("Enter viewStudent GetMethod..");
+        return "viewStudent";
+    }
     @RequestMapping(value = "/saveUserData", method = RequestMethod.POST)
     public String saveUserData(@ModelAttribute("saveUserData") UserTechStuData userModel, BindingResult result, Model model, HttpServletRequest request) {
 
@@ -159,7 +166,7 @@ public class UserController {
     }
 
     @GetMapping("/getSubjectList")
-    public ResponseEntity getSubjectList(Model model,@RequestParam Long yearId,@RequestParam Long semesterId, @RequestParam Long majorId) {
+    public ResponseEntity getSubjectList(Model model, @RequestParam Long yearId, @RequestParam Long semesterId, @RequestParam Long majorId) {
         log.info("!!! Start getSubjectList Method !!!");
         List<Subject> subjectList = userService.getSubjectList(yearId, semesterId, majorId);
         List<String> subjectNames = new ArrayList<>();
@@ -167,7 +174,7 @@ public class UserController {
             subjectNames.add(subject.getSubjectName());
         }
         model.addAttribute("subjectList", subjectNames);
-        log.info("subjectList:{}",model.getAttribute("subjectList"));
+        log.info("subjectList:{}", model.getAttribute("subjectList"));
         log.info("SubjectNames: {}", subjectNames);
         log.info("!!! Exit getSubjectList Method !!!");
         return ResponseEntity.ok().body(subjectNames);
@@ -196,7 +203,7 @@ public class UserController {
         return model;
     }*/
 
-    @GetMapping("/searchRecordById")
+   /* @GetMapping("/searchRecordById")
     public String search(Model model, @RequestParam String studentIdentity) {
         log.info("Enter searchRecord...");
         List<ShowResult> results = userService.searchRecord(studentIdentity);
@@ -204,10 +211,20 @@ public class UserController {
         model.addAttribute("results", results);
         log.info("Exit searchRecord");
         return "result";
+    }*/
+
+    @GetMapping("/searchById")
+    public ResponseEntity searchById(Model model, @RequestParam String studentIdentity) {
+        log.info("Enter searchRecord...");
+        List<StudentRecord> results = userService.searchById(studentIdentity);
+        log.info("search: " + results);
+        model.addAttribute("results", results);
+        log.info("Exit searchRecord");
+        return ResponseEntity.ok().body(results);
     }
 
     @PostMapping("/changePassword")
-    public ResponseEntity changePassword(Model model,Authentication authentication, @RequestParam String oldPassword, @RequestParam String newPassword) {
+    public ResponseEntity changePassword(Model model, Authentication authentication, @RequestParam String oldPassword, @RequestParam String newPassword) {
         Long userId = ((User) authentication.getPrincipal()).getId();
         log.info("Enter changePassword....");
         String changePassword = userService.changePassword(userId, oldPassword, newPassword);
@@ -222,13 +239,15 @@ public class UserController {
             return ResponseEntity.ok().body(changePassword);
         }
     }
-    @GetMapping("/viewUserData")
-    public ResponseEntity viewUserData(@RequestParam Long year, @RequestParam Long semester, @RequestParam Long major){
-        log.info("Enter viewUserData....");
-       List<StudentDetail> studentDetailList = userService.viewUserData(year,semester,major);
-       log.info("userTechStuDataList: {}", studentDetailList);
-       log.info("Exit viewUserData.....");
-       return ResponseEntity.ok().body(studentDetailList);
+
+    @PostMapping("/viewStudentData")
+    public String viewStudentData(Model model, @RequestParam Long yearId, @RequestParam Long semesterId, @RequestParam Long majorId) {
+        log.info("Enter viewStudentData....");
+        List<StudentDetail> studentDetailList = userService.viewStudentData(yearId, semesterId, majorId);
+        log.info("userTechStuDataList: {}", studentDetailList);
+        model.addAttribute("viewStudent", studentDetailList);
+        log.info("Exit viewStudentData.....");
+        return "viewStudent";
 
     }
 

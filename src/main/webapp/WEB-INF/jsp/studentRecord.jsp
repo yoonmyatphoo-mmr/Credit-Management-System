@@ -205,24 +205,21 @@ pageEncoding="ISO-8859-1" %>
                                     success: function(subjectList) {
                                         console.log(subjectList);
                                         // Clear any existing subject rows
-                                     /* $("#subject-rows").empty();
+                                     $("#subject-rows").empty();
 
                                         // Loop through each subject and add a row to the table
                                         subjectList.forEach(function(subject) {
                                             var subjectName = subject;
                                             var rowHtml = '<tr class="subject-row">' +
                                                 '<td>' + subjectName + '</td>' +
-                                                '<td><input type="number" name="mark[' + subjectName + ']" class="form-control" ></td>' +
-                                                '<td><input type="number" name="creditUnit[' + subjectName + ']" class="form-control" min="0" required></td>' +
+                                                '<td><input type="number" name="subjectMarks[' + subjectName + ']" class="form-control" ></td>' +
+                                                '<td><input type="number" name="subjectCreditUnits[' + subjectName + ']" class="form-control" min="0" required></td>' +
                                                 '</tr>';
                                             $("#subject-rows").append(rowHtml);
-                                        });*/
+                                        });
 
-                                        // Show the student information inputs and subject list
-                                        //$(".hide").removeClass("hide");
                                     },
                                     error: function(xhr, status, error) {
-                                        // Handle error response
                                         console.log("Error: " + error);
                                     }
                                 });
@@ -274,18 +271,14 @@ pageEncoding="ISO-8859-1" %>
                                         </tr>
                                         </thead>
                                         <tbody id="subject-rows">
-                                        <tr>
-                                            <td>${subject}</td>
-                                            <td><input type="text" name="${subject}-mark" class="form-control"></td>
-                                            <td><input type="text" name="${subject}-creditUnit" class="form-control"></td>
-                                        </tr>
-                                       <%-- <c:forEach items="${subjectList}" var="subject">
+                                      <%--  <c:forEach items="${subjectForStudentList}" var="subjectForStudent">
                                             <tr>
-                                                <td>${subject}</td>
-                                                <td><input type="text" name="${subject}-mark" class="form-control"></td>
-                                                <td><input type="text" name="${subject}-creditUnit" class="form-control"></td>
+                                                <td>${subjectForStudent.subjectName}</td>
+                                                <td><input type="number" name="mark[${subjectForStudent.subjectName}]" class="form-control"></td>
+                                                <td><input type="number" name="creditUnit[${subjectForStudent.subjectName}]" class="form-control" min="0" required></td>
                                             </tr>
                                         </c:forEach>--%>
+
 
                                         </tbody>
                                         <tr>
@@ -301,7 +294,6 @@ pageEncoding="ISO-8859-1" %>
                         </div>
                     </div>
             </body>
-                </form>
                     <c:remove var="successMessage" scope="session" />
                 </div>
             </div>

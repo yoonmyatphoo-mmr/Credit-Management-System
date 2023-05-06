@@ -16,10 +16,11 @@ import java.util.List;
  * @package: com.ymp.creditsystem.model.repository
  */
 @Repository
-public interface StudentRecordRepository extends JpaRepository<StudentRecord,Long> {
-    List<StudentRecord> findByStudentIdentity(String studentId);
+public interface StudentRecordRepository extends JpaRepository<StudentRecord, Long> {
+//    List<StudentRecord> findByStudentIdentity(String studentId);
 
-
+    @Query("SELECT sr FROM StudentRecord sr JOIN FETCH sr.subjectMarks WHERE sr.studentIdentity = :studentIdentity")
+    List<StudentRecord> findByStudentIdentityWithSubject(@Param("studentIdentity") String studentIdentity);
     /*@Query("SELECT SUM(s.creditUnit) FROM SubjectForStudent s WHERE s.studentIdentity = :studentIdentity AND s.semesterId = :semester")
     int getTotalCreditUnitsForSemesterAndStudent(@Param("studentIdentity") String studentIdentity, @Param("semester") String semester);
 

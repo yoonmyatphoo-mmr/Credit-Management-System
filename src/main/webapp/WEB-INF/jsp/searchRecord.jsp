@@ -127,7 +127,7 @@
           <div class="col-md-12">
             <!-- <h3 class="description">Your content here</h3> -->
             <div class="container bg-white col-md-10 mb-5 shadow-sm bg-opacity-75 p-5">
-              <form action="/searchRecordById",method="POST",modelAttribute="searchRecord">
+              <form action="/searchById",method="POST",modelAttribute="searchRecord">
                 <div class="col-md-10 offset-1 mb-3">
                     <label for="studentIdentity" class="mb-1">Student ID</label>
                     <input type="text" path="studentIdentity" id="studentIdentity" name="studentIdentity" class="form-control"
