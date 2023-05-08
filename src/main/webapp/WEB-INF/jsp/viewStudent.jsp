@@ -42,26 +42,26 @@
 
                             <div class="form-group mt-2">
                                 <select name="yearId" class="form-select shadow-sm">
-                                    <option value=1>First Year</option>
-                                    <option value=2>Second Year</option>
-                                    <option value=3>Third Year</option>
-                                    <option value=4>Fouth Year</option>
-                                    <option value=5>Fifth Year</option>
+                                    <option value="First Year">First Year</option>
+                                    <option value="Second Year">Second Year</option>
+                                    <option value="Third Year">Third Year</option>
+                                    <option value="Fourth Year">Fouth Year</option>
+                                    <option value="Fifth Year">Fifth Year</option>
                                 </select>
 
                             </div>
 
                             <div class="form-group mt-2">
                                 <select name="semesterId" class="form-select shadow-sm">
-                                    <option value=1>First Semester</option>
-                                    <option value=2>Second Semester</option>
+                                    <option value="First Semester">First Semester</option>
+                                    <option value="Second Semester">Second Semester</option>
                                 </select>
                             </div>
 
                             <div class="form-group mt-2">
                                 <select name="majorId" class="form-select shadow-sm">
-                                    <option value=1>Computer Science</option>
-                                    <option value=2>Computer Technology</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Computer Technology">Computer Technology</option>
                                 </select>
 
                             </div>
@@ -75,14 +75,10 @@
     </div>
 </div>
 
-<%--<div class="container-fluid">--%>
-<%--    <div class="collapse row justify-content-center " id="collapse">--%>
-<%--        <div class=" col-8 ">--%>
-<%--            <div class="card card-body mt-3 ">--%>
+<div class="container mt-5">
                 <table class="table table-success table-striped ">
                     <thead>
                     <tr>
-                        <th scope="col">id</th>
                         <th scope="col">Name</th>
                         <th scope="col">Student Id</th>
                         <th scope="col">Year</th>
@@ -96,18 +92,18 @@
                     <tbody>
                     <c:forEach items="${viewStudent}" var="studentDetail">
                         <tr>
-                            <td>${studentDetail.id}</td>
                             <td>${studentDetail.name}</td>
                             <td>${studentDetail.studentIdentity}</td>
                             <td>${studentDetail.yearId}</td>
                             <td>${studentDetail.semesterId}</td>
                             <td>${studentDetail.majorId}</td>
-                            <td><a href="#">Edit</a></td>
-                            <td><a href="#">Delete</a></td>
+                            <td><a href="#" class="btn btn-success">Edit</a></td>
+                            <td><a href="#" class="btn btn-danger">Delete</a></td>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
+</div>
             </div>
         </div>
 

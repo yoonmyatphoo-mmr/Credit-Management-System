@@ -33,11 +33,11 @@ public class UserTechStuData {
 
     private String studentId;
 
-    private Long majorId;
+    private String majorId;
 
-    private Long yearId;
+    private String yearId;
 
-    private Long semesterId;
+    private String semesterId;
 
     private String teacherId;
 

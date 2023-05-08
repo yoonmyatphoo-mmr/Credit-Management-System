@@ -95,6 +95,12 @@ pageEncoding="ISO-8859-1" %>
                                     <p>View Student Datas</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/viewSubject">
+                                    <i class="nc-icon nc-zoom-split"></i>
+                                    <p>View Subject List</p>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -159,6 +165,12 @@ pageEncoding="ISO-8859-1" %>
                             // Handle form submission
                             $("input[type='button']").click(function() {
                                 var studentIdentity = $("#studentIdentity").val();
+                                $("#error-message").text("");
+                                $('input[name="name"]').val("");
+                                $('input[name="yearId"]').val("");
+                                $('input[name="semesterId"]').val("");
+                                $('input[name="majorId"]').val("");
+                                $("#subject-rows").empty();
 
                                 // Get student information
                                 $.ajax({
@@ -168,25 +180,24 @@ pageEncoding="ISO-8859-1" %>
                                         studentIdentity: studentIdentity
                                     },
                                     success: function(data) {
-                                        // Update input fields with student information
-                                        var studentData = {
-                                            name: data.name,
-                                            yearId: data.yearId,
-                                            semesterId: data.semesterId,
-                                            majorId: data.majorId
-                                        };
                                         console.log(data);
-                                        $('input[name="name"]').val(data[0][0]);
-                                        $('input[name="yearId"]').val(data[0][1]);
-                                        $('input[name="semesterId"]').val(data[0][2]);
-                                        $('input[name="majorId"]').val(data[0][3]);
-
-                                        $('input[name="showSubjects"]').removeClass("hide");
-
+                                        var studentData = data[0].split(",");
+                                        console.log(studentData);
+                                        // Update input fields with student information
+                                        $('input[name="name"]').val(studentData[0]);
+                                        $('input[name="yearId"]').val(studentData[1]);
+                                        $('input[name="semesterId"]').val(studentData[2]);
+                                        $('input[name="majorId"]').val(studentData[3]);
+                                        $('div.hide').removeClass("hide");
                                     },
                                     error: function(xhr, status, error) {
-                                        // Handle error response
-                                        console.log("Error: " + error);
+                                        console.log(xhr.responseText);  // log the entire response
+                                        if (xhr.responseJSON && xhr.responseJSON.length > 0) {
+                                            var errorMessage = xhr.responseJSON[0];
+                                            $("#error-message").text(errorMessage);
+                                        } else {
+                                            console.log("Error: " + error);
+                                        }
                                     }
                                 });
 
@@ -211,7 +222,7 @@ pageEncoding="ISO-8859-1" %>
                                     success: function(subjectList) {
                                         console.log(subjectList);
                                         // Clear any existing subject rows
-                                     $("#subject-rows").empty();
+                                        $("#subject-rows").empty();
 
                                         // Loop through each subject and add a row to the table
                                         subjectList.forEach(function(subject) {
@@ -233,6 +244,7 @@ pageEncoding="ISO-8859-1" %>
                         });
                     </script>
 
+
                     <!-- End Navbar -->
                     <div class="card col-md-8 offset-md-2 mt-5" style="margin-top: 100px !important;">
                         <div class="card-header">
@@ -240,6 +252,13 @@ pageEncoding="ISO-8859-1" %>
                         </div>
                         <div class="card-body">
                             <form class="col-md-10 offset-md-1" action="/addStudentRecord", method="post",modelAttribute="addStudentRecord">
+                                <c:if test="${not empty successMessage}">
+                                <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
+                                </c:if>
+                                    <c:if test="${not empty exit}">
+                                    <div id="exit" class="alert alert-danger" role="alert">${exit}</div>
+                                    </c:if>
+                                <div id="error-message" class="alert alert-danger" role="alert"></div>
                                 <label for="studentIdentity">Student ID</label>
                                 <div class="">
                                     <input type="text" path="studentIdentity1" name="studentIdentity" id="studentIdentity" class="form-control"
@@ -247,22 +266,23 @@ pageEncoding="ISO-8859-1" %>
                                     <input type="button" value="submit" class="btn btn-dark text-white ">
                                 </div>
 
+
                                 <br>
                                 <div class="hide">
-                                <label for="studentName">Student Name</label>
-                                <input type="text" path="name" name="name" class="form-control"
+                                <label for="name">Student Name</label>
+                                <input type="text" name="name" class="form-control"
                                    value="" readonly>
                                 <br>
-                                <label for="currentYear">Current Year</label>
-                                <input type="number" path="yearId" name="yearId" class="form-control"
+                                <label for="yearId">Current Year</label>
+                                <input type="text" name="yearId" class="form-control"
                                     value="" readonly>
                                 <br>
-                                <label for="currentSem">Current Semaster</label>
-                                <input type="number" path="semesterId" name="semesterId" class="form-control"
+                                <label for="semesterId">Current Semaster</label>
+                                <input type="text" name="semesterId" class="form-control"
                                    value="" readonly>
                                 <br>
-                                    <label for="currentMajor">Current major</label>
-                                    <input type="number" path="majorId" name="majorId" class="form-control"
+                                    <label for="majorId">Current major</label>
+                                    <input type="text" name="majorId" class="form-control"
                                            value="" readonly>
                                     <br>
 
@@ -277,14 +297,6 @@ pageEncoding="ISO-8859-1" %>
                                         </tr>
                                         </thead>
                                         <tbody id="subject-rows">
-                                      <%--  <c:forEach items="${subjectForStudentList}" var="subjectForStudent">
-                                            <tr>
-                                                <td>${subjectForStudent.subjectName}</td>
-                                                <td><input type="number" name="mark[${subjectForStudent.subjectName}]" class="form-control"></td>
-                                                <td><input type="number" name="creditUnit[${subjectForStudent.subjectName}]" class="form-control" min="0" required></td>
-                                            </tr>
-                                        </c:forEach>--%>
-
 
                                         </tbody>
                                         <tr>
@@ -300,7 +312,7 @@ pageEncoding="ISO-8859-1" %>
                         </div>
                     </div>
             </body>
-                    <c:remove var="successMessage" scope="session" />
+
                 </div>
             </div>
             <!--   Core JS Files   -->

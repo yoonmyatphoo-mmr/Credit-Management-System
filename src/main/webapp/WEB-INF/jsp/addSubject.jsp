@@ -80,6 +80,12 @@
                         <p>View Student Datas</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/viewSubject">
+                        <i class="nc-icon nc-zoom-split"></i>
+                        <p>View Subject List</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -168,26 +174,26 @@
                             <div class="col-md-10 offset-1 mb-3">
                                 <label for="yearId" class="mb-1">Year</label>
                                 <select path="yearId" name="yearId" class="form-control" id="yearId">
-                                    <option value=1>First Year</option>
-                                    <option value=2>Second Year</option>
-                                    <option value=3>Third Year</option>
-                                    <option value=4>Fourth Year</option>
-                                    <option value=5>Fifth Year</option>
+                                    <option value="First Year">First Year</option>
+                                    <option value="Second Year">Second Year</option>
+                                    <option value="Third Year">Third Year</option>
+                                    <option value="Fourth Year">Fourth Year</option>
+                                    <option value="Fifth Year">Fifth Year</option>
                                 </select>
                             </div>
                             <div class="col-md-10 offset-1 mb-3">
                                 <label for="semesterId" class="mb-1">Semester</label>
                                 <select path="semesterId" name="semesterId" class="form-control" id="semesterId">
-                                    <option value=1>First Semester</option>
-                                    <option value=2>Second Semester</option>
+                                    <option value="First Semester">First Semester</option>
+                                    <option value="Second Semester">Second Semester</option>
                                 </select>
                             </div>
                             <div class="col-md-10 offset-1 mb-3">
                                 <label for="majorId" class="mb-1">Major</label>
                                 <select path="majorId" name="majorId" class="form-control" id="majorId">
-                                    <option value=1>Computer Science</option>
-                                    <option value=1>Computer Technology</option>
-                                    <option value=3>Computer Science and Technology</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Computer Technology">Computer Technology</option>
+                                    <option value="Computer Science and Technology">Computer Science and Technology</option>
                                 </select>
                             </div>
                             <div class="col-md-8 col-lg-10 offset-1">

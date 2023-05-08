@@ -16,7 +16,8 @@ public interface SubjectRepository extends JpaRepository<Subject,Long> {
 
     List<Subject> findByDeleted(boolean deleted);
 
-    List<Subject> findAllByYearIdAndSemesterIdAndMajorId(Long yearId, Long semesterId, Long majorId);
+    List<Subject> findAllByYearIdAndSemesterIdAndMajorId(String yearId, String semesterId, String majorId);
 
+    List<Subject> findBySubjectName(String subjectName);
 
 }

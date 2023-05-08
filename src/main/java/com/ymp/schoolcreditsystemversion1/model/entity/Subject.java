@@ -23,9 +23,9 @@ public class Subject {
     private Long id;
     private String subjectCode;
     private String subjectName;
-    private Long yearId;
-    private Long majorId;
-    private Long semesterId;
+    private String yearId;
+    private String majorId;
+    private String semesterId;
     private boolean deleted;
     private Date createdDate;
     private Date updatedDate;

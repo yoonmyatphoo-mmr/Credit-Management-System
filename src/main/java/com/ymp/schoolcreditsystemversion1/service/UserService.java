@@ -4,8 +4,6 @@ import com.ymp.schoolcreditsystemversion1.model.entity.*;
 import com.ymp.schoolcreditsystemversion1.model.request.UserTechStuData;
 import com.ymp.schoolcreditsystemversion1.model.response.RequireDataResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -17,28 +15,29 @@ import java.util.Map;
  */
 public interface UserService {
 
-  String saveUserData(UserTechStuData userModel);
+    String saveUserData(UserTechStuData userModel);
 
-  User login(String email, String password);
-  RequireDataResponse getRequireData();
-  Subject insertSubject(Subject subject);
- StudentRecord addRecord(StudentRecord studentRecord);
+    User login(String email, String password);
 
-  List<Subject> getSubjectList(Long yearId, Long semesterId, Long majorId);
-  Object[] getYearSemeMajorName(String studentId);
-  List<ShowResult> searchRecord(String studentId);
+    RequireDataResponse getRequireData();
 
- List<StudentRecord> searchById(String studentId);
+    Subject insertSubject(Subject subject);
 
-  String changePassword(Long id,String oldPassword,String password);
+    Boolean addRecord(StudentRecord studentRecord);
 
-  List<StudentDetail> viewStudentData(Long year, Long semester, Long major);
+    List<Subject> getSubjectList(String yearId, String semesterId, String majorId);
 
-  List<Subject> viewSubjectData(Long year, Long semester, Long major);
+    String[] getYearSemeMajorName(String studentId);
 
+    List<ShowResult> searchRecord(String studentId);
 
+    List<Map<String, Object>> searchById(String studentId);
 
+    String changePassword(Long id, String oldPassword, String password);
 
+    List<StudentDetail> viewStudentData(String year, String semester, String major);
+
+    List<Subject> viewSubjectData(String year, String semester, String major);
 
 
 }

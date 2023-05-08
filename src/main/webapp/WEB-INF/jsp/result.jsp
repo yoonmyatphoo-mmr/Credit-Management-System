@@ -54,19 +54,18 @@
             <div class="row1"><h3 class="text-center restext">TechnologyUniversity of Computer Studies(Taunggyi)</h3></div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-8">
-            <span class="crisom-text lh-lg">Address : Union Road, Taunggyi City</span><br>
-            <span class="crisom-text lh-1 restext2">Shan State, Union of Myanmar</span>
-        </div>
-        <div class="col"><span class="crisom-text lh-lg">Telephone: 09 - 407625500, 09 - 407625533</span></div>
-    </div>
     <c:choose>
         <c:when test="${empty results}">
             <div class="alert alert-info" role="alert">No results found</div>
         </c:when>
         <c:otherwise>
-
+    <div class="row">
+        <div class="col-8">
+            <span class="crisom-text lh-lg">Address : Union Road, Taunggyi City</span><br>
+            <span class="crisom-text lh-1 restext2">Shan State, Union of Myanmar</span>
+        </div>
+        <div class="col"><span class="crisom-text lh-lg">Telephone: 09-899766543</span></div>
+    </div>
             <div class="row">
                 <div class="col-1"><span class="crimson-text">Name</span></div>
                 <div class="col-7"><span class="crimson-text">${results[0].name}</span></div>
@@ -75,14 +74,14 @@
             </div>
             <div class="row">
                 <div class="col-1"><span class="crimson-text">Year</span></div>
-                <div class="col"><span class="crimson-text">${results[0].year} (2019-2020) Academic Year</span></div>
+                <div class="col"><span class="crimson-text">${results[0].yearId} ${results[0].majorId} (2019-2020) Academic Year</span></div>
             </div>
             <div class="row">
-                <div class="col text-center"><span class="crimson-text">${results[0].semester} (GPA Sheet)</span></div>
+                <div class="col text-center"><span class="crimson-text">${results[0].semesterId} (GPA Sheet)</span></div>
             </div>
             <div class="row bg-light">
                 <div class="col-1"><span class="crimson-text">Subject Code</span></div>
-                <div class="col"><span class="crimson-text">Subject</span></div>
+                <div class="col"><span class="crimson-text">Subject Name</span></div>
                 <div class="col-1"><span class="crimson-text">Credit Unit</span></div>
                 <div class="col-1"><span class="crimson-text">Grade</span></div>
                 <div class="col-1"><span class="crimson-text">Grade Score</span></div>
@@ -94,12 +93,12 @@
                 <div class="row">
                     <div class="col-1"><span class="fs-6">E-0233</span></div>
                     <div class="col"><span class="fs-6">${result.subjectName}</span></div>
-                    <div class="col-1 text-center"><span class="fs-6">${result.creditUnit}</span></div>
+                    <div class="col-1 text-center"><span class="fs-6">${result.subjectCreditUnits}</span></div>
                     <div class="col-1 text-center"><span class="fs-6">${result.grade}</span></div>
                     <div class="col-1 text-center"><span class="fs-6">${result.gradeScore}</span></div>
                     <div class="col-1 text-center"><span class="fs-6">${result.gradePoint}</span></div>
                 </div>
-                <c:set var="totalCreditUnit" value="${totalCreditUnit + result.creditUnit}" />
+                <c:set var="totalCreditUnit" value="${totalCreditUnit + result.subjectCreditUnits}" />
                 <c:set var="totalGradePoint" value="${totalGradePoint + result.gradePoint}" />
             </c:forEach>
             <div class="row">
@@ -200,5 +199,6 @@
     </div>
 </div>
 </span>
+</form>
 </body>
 </html>

@@ -125,7 +125,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public StudentRecord addRecord(StudentRecord studentRecord) {
+    public Boolean addRecord(StudentRecord studentRecord) {
+
+        List<StudentRecord> existingRecord = studentRecordRepository.findByStudentIdentity(studentRecord.getStudentIdentity());
+        if (!existingRecord.isEmpty()) {
+            return false; // Record with same studentId already exists, return false
+        }
+
         Map<String, Integer> subjectMarks = studentRecord.getSubjectMarks();
         Map<String, Integer> subjectCreditUnits = studentRecord.getSubjectCreditUnits();
 
@@ -138,6 +144,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             String subjectName = entry.getKey();
             int marks = entry.getValue();
 
+            List<Subject> subjectList = subjectRepository.findBySubjectName(subjectName);
+            if (subjectList.isEmpty()) {
+                //throw new IllegalArgumentException("Subject not found: " + subjectName);
+            }
+            Subject subject = subjectList.get(0);
+            String subjectCode = subject.getSubjectCode();
+
             GradeAndScore gradeAndScore = setGradeAndScore(marks);
             double gradeScore = gradeAndScore.getGradeScore();
             String grade = gradeAndScore.getGrade();
@@ -145,7 +158,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             int creditUnits = subjectCreditUnits.getOrDefault(subjectName, 0);
             double gradePoint = creditUnits * gradeScore;
 
-            SubjectForStudent subjectForStudent = new SubjectForStudent(subjectName, marks, creditUnits, grade, gradeScore, gradePoint);
+            SubjectForStudent subjectForStudent = new SubjectForStudent(subjectName, subjectCode, marks, creditUnits, grade, gradeScore, gradePoint);
             log.info(subjectForStudent.toString());
             subjectForStudentRepository.save(subjectForStudent); // save SubjectForStudent entity first
             subjectForStudent.setStudentRecord(studentRecord);
@@ -153,20 +166,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         studentRecord.setSubjects(subjects);
-        return studentRecordRepository.save(studentRecord); // save StudentRecord entity last
+        StudentRecord record = studentRecordRepository.save(studentRecord);
+        return record != null;// save StudentRecord entity last
     }
 
 
-
     @Override
-    public List<Subject> getSubjectList(Long yearId, Long semesterId, Long majorId) {
+    public List<Subject> getSubjectList(String yearId, String semesterId, String majorId) {
         List<Subject> subject = subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(yearId, semesterId, majorId);
         return subject;
     }
 
     @Override
-    public Object[] getYearSemeMajorName(String studentId) {
-        Object[] getYearSemeMajorName = studentDetailRepository.findYearMajorSemesterAndNameByStudentIdentity(studentId);
+    public String[] getYearSemeMajorName(String studentId) {
+        List<StudentDetail> studentDetails = studentDetailRepository.findByStudentIdentity(studentId);
+        if (studentDetails.isEmpty()) {
+            return new String[0];
+        }
+        String[] getYearSemeMajorName = studentDetailRepository.findYearMajorSemesterAndNameByStudentIdentity(studentId);
         return getYearSemeMajorName;
     }
 
@@ -178,9 +195,32 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public List<StudentRecord> searchById(String studentId) {
-        List<StudentRecord> studentRecords = studentRecordRepository.findByStudentIdentityWithSubject(studentId);
-        return studentRecords;
+    public List<Map<String, Object>> searchById(String studentIdentity) {
+        List<Map<String, Object>> subjectDetails = new ArrayList<>();
+        List<StudentRecord> studentRecords = studentRecordRepository.findByStudentIdentity(studentIdentity);
+
+
+        for (StudentRecord studentRecord : studentRecords) {
+
+            for (SubjectForStudent subject : studentRecord.getSubjects()) {
+                Map<String, Object> details = new HashMap<>();
+                details.put("name", studentRecord.getName());
+                details.put("yearId", studentRecord.getYearId());
+                details.put("majorId", studentRecord.getMajorId());
+                details.put("semesterId", studentRecord.getSemesterId());
+                details.put("studentIdentity", studentRecord.getStudentIdentity());
+                details.put("subjectCreditUnits", studentRecord.getSubjectCreditUnits());
+                details.put("subjectName", subject.getSubjectName());
+                details.put("subjectCode", subject.getSubjectCode());
+                details.put("subjectMarks", subject.getSubjectMarks());
+                details.put("subjectCreditUnits", subject.getSubjectCreditUnits());
+                details.put("grade", subject.getGrade());
+                details.put("gradeScore", subject.getGradeScore());
+                details.put("gradePoint", subject.getGradePoint());
+                subjectDetails.add(details);
+            }
+        }
+        return subjectDetails;
     }
 
     @Override
@@ -198,14 +238,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<StudentDetail> viewStudentData(Long year, Long semester, Long major) {
+    public List<StudentDetail> viewStudentData(String year, String semester, String major) {
         List<StudentDetail> studentDetailList = studentDetailRepository.findByYearIdAndSemesterIdAndMajorId(year, semester, major);
         return studentDetailList;
     }
 
     @Override
-    public List<Subject> viewSubjectData(Long year, Long semester, Long major) {
-        List<Subject> subjectList = subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(year,semester,major);
+    public List<Subject> viewSubjectData(String year, String semester, String major) {
+        List<Subject> subjectList = subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(year, semester, major);
         return subjectList;
     }
 
@@ -255,6 +295,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 studentDetailModel.setMajorId(userTechStuData.getMajorId());
                 studentDetailModel.setSemesterId(userTechStuData.getSemesterId());
                 studentDetailModel.setYearId(userTechStuData.getYearId());
+                studentDetailModel.setPhoneNo(userTechStuData.getPhoneNo());
+                studentDetailModel.setAddress(userTechStuData.getAddress());
                 studentDetailRepository.save(studentDetailModel);
             }
 

@@ -75,6 +75,12 @@
               <p>View Student Datas</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/viewSubject">
+              <i class="nc-icon nc-zoom-split"></i>
+              <p>View Subject List</p>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

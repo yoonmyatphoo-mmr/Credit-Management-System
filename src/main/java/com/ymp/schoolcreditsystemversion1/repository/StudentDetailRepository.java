@@ -18,9 +18,11 @@ import java.util.List;
 public interface StudentDetailRepository extends JpaRepository<StudentDetail,String> {
 
     @Query("SELECT s.name, s.yearId, s.semesterId, s.majorId FROM StudentDetail s WHERE s.studentIdentity = :studentIdentity")
-    Object[] findYearMajorSemesterAndNameByStudentIdentity(@Param("studentIdentity") String studentIdentity);
+    String[] findYearMajorSemesterAndNameByStudentIdentity(@Param("studentIdentity") String studentIdentity);
+
     List<StudentDetail> findByStudentIdentity(String studentIdentity);
 
-    List<StudentDetail> findByYearIdAndSemesterIdAndMajorId(Long year,Long semester, Long major);
+    List<StudentDetail> findByYearIdAndSemesterIdAndMajorId(String year,String semester, String major);
+
 
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Yoon Myat Phoo
@@ -66,8 +67,6 @@ public class UserController {
 
     @GetMapping("/studentRecord")
     public String getStudentRecord(Model model) {
-
-        model.addAttribute("addStudentRecord", new StudentRecord());
         return "studentRecord";
     }
 
@@ -163,16 +162,19 @@ public class UserController {
     }
 
     @GetMapping("/getYearSemeMajorName")
-    public ResponseEntity getYearSemeMajorName(@RequestParam String studentIdentity) {
+    public ResponseEntity getYearSemeMajorName(@RequestParam String studentIdentity, Model model) {
         log.info("!!! Start getYearSemeMajor !!!");
-        Object[] getYearSemeMajorName = userService.getYearSemeMajorName(studentIdentity);
+        String[] getYearSemeMajorName = userService.getYearSemeMajorName(studentIdentity);
+        if (getYearSemeMajorName.length == 0) {
+            return ResponseEntity.badRequest().body(new String[]{studentIdentity + " does not exist in studentList!"});
+        }
         log.info("getYearSemeMajorName: {}", getYearSemeMajorName);
         log.info("!!! Exit getYearSemeMajor");
         return ResponseEntity.ok().body(getYearSemeMajorName);
     }
 
     @GetMapping("/getSubjectList")
-    public ResponseEntity getSubjectList(Model model, @RequestParam Long yearId, @RequestParam Long semesterId, @RequestParam Long majorId) {
+    public ResponseEntity getSubjectList(Model model, @RequestParam String yearId, @RequestParam String semesterId, @RequestParam String majorId) {
         log.info("!!! Start getSubjectList Method !!!");
         List<Subject> subjectList = userService.getSubjectList(yearId, semesterId, majorId);
         List<String> subjectNames = new ArrayList<>();
@@ -180,53 +182,35 @@ public class UserController {
             subjectNames.add(subject.getSubjectName());
         }
         model.addAttribute("subjectList", subjectNames);
-        log.info("subjectList:{}", model.getAttribute("subjectList"));
+        // log.info("subjectList:{}", model.getAttribute("subjectList"));
         log.info("SubjectNames: {}", subjectNames);
         log.info("!!! Exit getSubjectList Method !!!");
         return ResponseEntity.ok().body(subjectNames);
     }
 
-
     @PostMapping("/addStudentRecord")
-    public ResponseEntity addRecord(@ModelAttribute("addStudentRecord") @RequestBody StudentRecord studentRecord, Model model) {
+    public String addRecord(@ModelAttribute("addStudentRecord") @RequestBody StudentRecord studentRecord, Model model) {
         log.info("!!! Start addRecord Method !!!");
-        log.info("Request data: {}", studentRecord);
-        StudentRecord record = userService.addRecord(studentRecord);
-        log.info("Records: " + record);
+        // log.info("Request data: {}", studentRecord);
+        Boolean success = userService.addRecord(studentRecord);
+        if(!success){
+            model.addAttribute("exit",studentRecord.getName()+ "'s record exit!");
+        }
+        else{
+            model.addAttribute("successMessage", studentRecord.getName() + "'s record is successfully add!");
+        }
         log.info("Exit addStudentRecord.....");
-        return ResponseEntity.ok().body(record);
+        return "studentRecord";
     }
 
-
-   /* @GetMapping("/showResult")
-    public ResponseEntity showData(Model model) {
-        log.info("Enter showResult....");
-        List<ShowResult> result = userService.showResult();
-        log.info("result: " + result);
-       model.addObject("showResult",result);
-       model.setViewName("studentAcademicRecord");
-        log.info("Exit showResult....");
-        return model;
-    }*/
-
-   /* @GetMapping("/searchRecordById")
-    public String search(Model model, @RequestParam String studentIdentity) {
+    @GetMapping("/searchById")
+    public String searchById(Model model, @RequestParam String studentIdentity) {
         log.info("Enter searchRecord...");
-        List<ShowResult> results = userService.searchRecord(studentIdentity);
+        List<Map<String, Object>> results = userService.searchById(studentIdentity);
         log.info("search: " + results);
         model.addAttribute("results", results);
         log.info("Exit searchRecord");
         return "result";
-    }*/
-
-    @GetMapping("/searchById")
-    public ResponseEntity searchById(Model model, @RequestParam String studentIdentity) {
-        log.info("Enter searchRecord...");
-        List<StudentRecord> results = userService.searchById(studentIdentity);
-        log.info("search: " + results);
-        model.addAttribute("results", results);
-        log.info("Exit searchRecord");
-        return ResponseEntity.ok().body(results);
     }
 
     @PostMapping("/changePassword")
@@ -247,7 +231,7 @@ public class UserController {
     }
 
     @PostMapping("/viewStudentData")
-    public String viewStudentData(Model model, @RequestParam Long yearId, @RequestParam Long semesterId, @RequestParam Long majorId) {
+    public String viewStudentData(Model model, @RequestParam String yearId, @RequestParam String semesterId, @RequestParam String majorId) {
         log.info("Enter viewStudentData....");
         List<StudentDetail> studentDetailList = userService.viewStudentData(yearId, semesterId, majorId);
         log.info("StudentDataList: {}", studentDetailList);
@@ -258,10 +242,10 @@ public class UserController {
     }
 
     @PostMapping("/viewSubjectList")
-    public String viewSubjectData(Model model, @RequestParam Long yearId, @RequestParam Long semesterId, @RequestParam Long majorId) {
+    public String viewSubjectData(Model model, @RequestParam String yearId, @RequestParam String semesterId, @RequestParam String majorId) {
         log.info("Enter viewSubjectData...");
         List<Subject> subjectList = userService.viewSubjectData(yearId, semesterId, majorId);
-        log.info("SubjectList: {}",subjectList);
+        log.info("SubjectList: {}", subjectList);
         model.addAttribute("viewSubject", subjectList);
         log.info("Exit viewSubjectData..");
         return "viewSubject";

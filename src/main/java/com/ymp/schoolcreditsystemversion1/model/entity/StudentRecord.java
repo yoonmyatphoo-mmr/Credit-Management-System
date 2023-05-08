@@ -30,10 +30,10 @@ public class StudentRecord {
     @Column(name = "student_id")
     private String studentIdentity;
     private String name;
-    private int yearId;
-    private int majorId;
-    private int semesterId;
-    private String phoneNo;
+    private String yearId;
+    private String majorId;
+    private String semesterId;
+
     @ElementCollection
     @CollectionTable(name = "subject_marks", joinColumns = @JoinColumn(name = "student_id"))
     @MapKeyColumn(name = "subjectName")

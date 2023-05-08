@@ -25,12 +25,16 @@ public class StudentDetail {
 
     private String name;
 
-    private Long yearId;
+    private String yearId;
 
-    private Long semesterId;
+    private String semesterId;
 
-    private Long majorId;
+    private String majorId;
 
     private Long userId;
+
+    private String phoneNo;
+
+    private String address;
 
 }

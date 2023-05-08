@@ -106,16 +106,6 @@ pageEncoding="ISO-8859-1"%>
           </button>
           
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <form>
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <i class="nc-icon nc-zoom-split"></i>
-                  </div>
-                </div>
-              </div>
-            </form>
             <ul class="navbar-nav">
                 <li class="nav-item btn-rotate">
                     <div class="d-lg-none btn col-md-5 text-start"><i class="fa-solid fa-users mr-2"></i>User Accounts</div>
@@ -132,7 +122,6 @@ pageEncoding="ISO-8859-1"%>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="/profile">Profile</a>
-                  <a class="dropdown-item" href="/changePassword">Change Password</a>
                   <a class="dropdown-item" href="#">Logout</a>
                 </div>
               </li>
@@ -147,7 +136,7 @@ pageEncoding="ISO-8859-1"%>
             <!-- <h3 class="description">Your content here</h3> -->
             <div class="container bg-white col-md-10 mb-5 shadow-sm bg-opacity-75 p-5">
                 <form action="/saveUserData", method="post" modelAttribute="saveUserData">
-                    <c:if test="${not empty successMessage}">
+                    <%--<c:if test="${not empty successMessage}">
                         <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
                     </c:if>
                     <c:if test="${not empty studentIdError}">
@@ -156,10 +145,21 @@ pageEncoding="ISO-8859-1"%>
                     <c:if test="${not empty teacherIdError}">
                         <div id="teacherIdError" class="alert alert-danger" role="alert">${teacherIdError}</div>
                     </c:if>
-                    <br>
                     <c:if test="${not empty serverError}">
                         <div id="errorMessage" class="alert alert-danger" role="alert">${serverError}</div>
+                    </c:if>--%>
+                    <c:if test="${not empty successMessage}">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+
+                        <strong>${successMessage}</strong>
+
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     </c:if>
+                        <script>
+                            document.getElementById("successMessage")
+                        </script>
                     <div class="col-md-10 offset-1 mb-3">
                         <label for="name" class="mb-1">User Name</label>
                         <input path="name" required type="text" id="name" name="name" class="form-control"
@@ -211,26 +211,26 @@ pageEncoding="ISO-8859-1"%>
                     <div class="col-md-10 offset-1 mb-3">
                       <label for="majorId" class="mb-1">Major</label>
                       <select id="majorId" path="majorId" name="majorId" class="form-control" id="majorId">
-                        <option value=1>Computer Science</option>
-                        <option  value=2>Computer Technology</option>
-                        <option value=3>Computer Science and Technology</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option  value="Computer Technology">Computer Technology</option>
+                        <option value="Computer Science and Technology">Computer Science and Technology</option>
                       </select>
                   </div>
                   <div class="col-md-10 offset-1 mb-3">
                     <label for="yearId" class="mb-1">Year</label>
                     <select  name="yearId" path="yearId" name="yearId" class="form-control" id="yearId">
-                      <option value=1>First Year</option>
-                      <option value=2>Second Year</option>
-                      <option value=3>Third Year</option>
-                      <option value=4>Fourth Year</option>
-                      <option value=5>Fifth Year</option>
+                      <option value="First Year">First Year</option>
+                      <option value="Second Year">Second Year</option>
+                      <option value="Third Year">Third Year</option>
+                      <option value="Fourth Year">Fourth Year</option>
+                      <option value="Fifth Year">Fifth Year</option>
                     </select>
                 </div>
                 <div class="col-md-10 offset-1 mb-3">
                   <label for="semesterId" class="mb-1">Semester</label>
                   <select path="semesterId" name="semesterId" class="form-control" id="semesterId">
-                    <option value=1>First Semester</option>
-                    <option value=2>Second Semester</option>
+                    <option value="First Semester">First Semester</option>
+                    <option value="Second Semester">Second Semester</option>
                     </select>
               </div>
               </div>

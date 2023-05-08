@@ -31,6 +31,9 @@ public class SubjectForStudent {
     @Column(name = "subject_name")
     private String subjectName;
 
+    @Column(name="subject_code")
+    private String subjectCode;
+
     @Column(name = "subject_marks")
     private int subjectMarks;
 
@@ -47,7 +50,7 @@ public class SubjectForStudent {
     private double gradePoint;
 
 
-    public SubjectForStudent(String subjectName, int marks, int creditUnits, String grade, double gradeScore, double gradePoint) {
+    public SubjectForStudent(String subjectName,String subjectCode, int marks, int creditUnits, String grade, double gradeScore, double gradePoint) {
         this.subjectName = subjectName;
         this.subjectMarks = marks;
         this.subjectCreditUnits = creditUnits;

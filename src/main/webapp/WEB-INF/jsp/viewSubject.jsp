@@ -48,11 +48,11 @@
                             <div class="form-group mt-2">
                                 <select name="yearId" class="form-select shadow-sm">
                                     <option value=>Year </option>
-                                    <option value=1>First Year</option>
-                                    <option value=2>Second Year</option>
-                                    <option value=3>Third Year</option>
-                                    <option value=4>Fourth Year</option>
-                                    <option value=5>Fifth Year</option>
+                                    <option value="First Year">First Year</option>
+                                    <option value="Second Year">Second Year</option>
+                                    <option value="Third Year">Third Year</option>
+                                    <option value="Fourth Year">Fourth Year</option>
+                                    <option value="Fifth Year">Fifth Year</option>
                                 </select>
 
                             </div>
@@ -60,21 +60,22 @@
                             <div class="form-group mt-2">
                                 <select name="semesterId" class="form-select shadow-sm">
                                     <option value=>Semester </option>
-                                    <option value=1>First Semester</option>
-                                    <option value=2>Second Semester</option>
+                                    <option value="First Semester">First Semester</option>
+                                    <option value="Second Semester">Second Semester</option>
                                 </select>
                             </div>
 
                             <div class="form-group mt-2">
                                 <select name="majorId" class="form-select shadow-sm">
                                     <option value=>Major </option>
-                                    <option value=1>Computer Science</option>
-                                    <option value=2>Computer Technology</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Computer Technology">Computer Technology</option>
                                 </select>
 
                             </div>
 
                             <button type="submit" class="btn btn-dark mt-3">Enter</button>
+
                         </div>
                     </div>
                 </form>
@@ -88,10 +89,11 @@
     <div class="collapse row justify-content-center " id="collapse">
         <div class=" col-8 ">
             <div class="card card-body mt-3 ">--%>
-                <table class="table table-success table-striped ">
+
+<div class="container mt-5">
+                <table class="table table-success table-striped" >
                     <thead>
                     <tr>
-                        <th scope="col">id</th>
                         <th scope="col">Year</th>
                         <th scope="col">Semester</th>
                         <th scope="col">Major</th>
@@ -105,18 +107,18 @@
                     <tbody>
                     <c:forEach items="${viewSubject}" var="subjectList">
                         <tr>
-                            <td>${subjectList.id}</td>
                             <td>${subjectList.yearId}</td>
                             <td>${subjectList.semesterId}</td>
                             <td>${subjectList.majorId}</td>
                             <td>${subjectList.subjectName}</td>
                             <td>${subjectList.subjectCode}</td>
-                            <td><a href="#">Edit</a></td>
-                            <td><a href="#">Delete</a></td>
+                            <td><a href="#" class="btn btn-success">Edit</a></td>
+                            <td><a href="#" class="btn btn-danger">Delete</a></td>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
+</div>
             </div>
         </div>
 
@@ -125,6 +127,15 @@
 
 
 </body>
+<%--<script>
+
+    document.getElementById("view").style.display = "none";
+    function view(){
+        var view = document.getElementById("view");
+        document.getElementById("view").style.display="block";
+    }
+
+</script>--%>
 
 <!-- bootstrap js link  -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
