@@ -85,7 +85,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User login(String email, String password) {
         List<User> userList = userRepository.findByEmailAndPasswordAndDeleted(email, password, false);
 
-        //log.info("userList: " + userList);
         if (userList == null || userList.isEmpty()) {
             log.info("Wrong Credentials");
             return null;
@@ -101,7 +100,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<Subject> subjectList = subjectRepository.findByDeleted(false);
         List<Semester> semesterList = semesterRepository.findByDeleted(false);
         List<Year> yearList = yearRepository.findByDeleted(false);
-        //log.info("yearList: {}",yearList);
         List<Major> majorList = majorRepository.findByDeleted(false);
         return new RequireDataResponse(new YearResponse(yearList), new MajorResponse(majorList), new SemesterResponse(semesterList), new SubjectResponse(subjectList));
     }
@@ -118,18 +116,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         subjectModel.setDeleted(false);
         subjectModel.setUpdatedDate(Date.valueOf(LocalDate.now()));
         subjectModel.setCreatedDate(Date.valueOf(LocalDate.now()));
-
-        Subject addedSubject = subjectRepository.save(subjectModel);
-        return addedSubject;
+        return subjectRepository.save(subjectModel);
     }
 
 
     @Override
-    public Boolean addRecord(StudentRecord studentRecord) {
+    public String addRecord(StudentRecord studentRecord) {
 
-        List<StudentRecord> existingRecord = studentRecordRepository.findByStudentIdentity(studentRecord.getStudentIdentity());
-        if (!existingRecord.isEmpty()) {
-            return false; // Record with same studentId already exists, return false
+        StudentRecord existingRecord = studentRecordRepository.findByStudentIdentityAndYearIdAndSemesterIdAndMajorId(studentRecord.getStudentIdentity(),studentRecord.getYearId(),studentRecord.getSemesterId(),studentRecord.getMajorId());
+        if (existingRecord!=null) {
+            return "existingRecord"; // Record with same studentId already exists, return false
         }
 
         Map<String, Integer> subjectMarks = studentRecord.getSubjectMarks();
@@ -145,9 +141,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             int marks = entry.getValue();
 
             List<Subject> subjectList = subjectRepository.findBySubjectName(subjectName);
-            if (subjectList.isEmpty()) {
-                //throw new IllegalArgumentException("Subject not found: " + subjectName);
-            }
             Subject subject = subjectList.get(0);
             String subjectCode = subject.getSubjectCode();
 
@@ -166,15 +159,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         studentRecord.setSubjects(subjects);
-        StudentRecord record = studentRecordRepository.save(studentRecord);
-        return record != null;// save StudentRecord entity last
+        studentRecordRepository.save(studentRecord);
+        return "successMessage";// save StudentRecord entity last
     }
 
 
     @Override
     public List<Subject> getSubjectList(String yearId, String semesterId, String majorId) {
-        List<Subject> subject = subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(yearId, semesterId, majorId);
-        return subject;
+        return subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(yearId, semesterId, majorId);
     }
 
     @Override
@@ -183,14 +175,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (studentDetails.isEmpty()) {
             return new String[0];
         }
-        String[] getYearSemeMajorName = studentDetailRepository.findYearMajorSemesterAndNameByStudentIdentity(studentId);
-        return getYearSemeMajorName;
+        return studentDetailRepository.findYearMajorSemesterAndNameByStudentIdentity(studentId);
     }
 
     @Override
     public List<ShowResult> searchRecord(String studentId) {
-        List<ShowResult> showResults = showResultRepository.findByStudentIdentity(studentId);
-        return showResults;
+        return showResultRepository.findByStudentIdentity(studentId);
     }
 
     @Override
@@ -203,15 +193,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         for (StudentRecord studentRecord : studentRecords) {
 
             for (SubjectForStudent subject : studentRecord.getSubjects()) {
+                List<Subject> subjectList = subjectRepository.findBySubjectName(subject.getSubjectName());
+              String subjectCode = subjectList.get(0).getSubjectCode();
                 Map<String, Object> details = new HashMap<>();
                 details.put("name", studentRecord.getName());
                 details.put("yearId", studentRecord.getYearId());
                 details.put("majorId", studentRecord.getMajorId());
                 details.put("semesterId", studentRecord.getSemesterId());
                 details.put("studentIdentity", studentRecord.getStudentIdentity());
-                details.put("subjectCreditUnits", studentRecord.getSubjectCreditUnits());
                 details.put("subjectName", subject.getSubjectName());
-                details.put("subjectCode", subject.getSubjectCode());
+                details.put("subjectCode", subjectCode);
                 details.put("subjectMarks", subject.getSubjectMarks());
                 details.put("subjectCreditUnits", subject.getSubjectCreditUnits());
                 details.put("grade", subject.getGrade());
@@ -239,14 +230,69 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<StudentDetail> viewStudentData(String year, String semester, String major) {
-        List<StudentDetail> studentDetailList = studentDetailRepository.findByYearIdAndSemesterIdAndMajorId(year, semester, major);
-        return studentDetailList;
+        return studentDetailRepository.findByYearIdAndSemesterIdAndMajorId(year, semester, major);
     }
 
     @Override
     public List<Subject> viewSubjectData(String year, String semester, String major) {
-        List<Subject> subjectList = subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(year, semester, major);
-        return subjectList;
+        return subjectRepository.findAllByYearIdAndSemesterIdAndMajorId(year, semester, major);
+    }
+
+    @Override
+    public List<StudentDetail> editStudent(String studentId) {
+        return studentDetailRepository.findByStudentIdentity(studentId);
+    }
+
+    @Override
+    public List<StudentDetail> getStudentByIdentity(String studentId) {
+        return studentDetailRepository.findByStudentIdentity(studentId);
+    }
+
+    @Override
+    public StudentDetail saveStudent(StudentDetail studentDetail) {
+        return studentDetailRepository.save(studentDetail);
+    }
+
+    @Override
+    public String deleteStudent(String studentIdentity) {
+        if (studentIdentity.isEmpty()) {
+            return "empty";
+        }
+        List<StudentDetail> studentDetail = studentDetailRepository.findByStudentIdentity(studentIdentity);
+        if (studentDetail == null) {
+            return "doesn't exit";
+        }
+        StudentDetail stuData = studentDetail.get(0);
+        Long userId = stuData.getUserId();
+
+        studentDetailRepository.delete(studentDetail.get(0));
+        userRepository.deleteById(userId);
+        return "success";
+    }
+
+    @Override
+    public Subject editSubject(Long id) {
+        Optional<Subject> subject = subjectRepository.findById(id);
+        return subject.orElse(null);
+    }
+
+    @Override
+    public Subject saveSubject(Subject subject) {
+        return subjectRepository.save(subject);
+    }
+
+    @Override
+    public String deleteSubject(Long id) {
+        if (id.equals(null)) {
+            return "empty";
+        }
+        Optional<Subject> subject = subjectRepository.findById(id);
+        if (subject == null) {
+            return "doesn't exit";
+        }
+        subjectRepository.delete(subject.orElse(null));
+
+        return "success";
     }
 
 

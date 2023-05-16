@@ -91,7 +91,7 @@
             <c:set var="totalGradePoint" value="0" />
             <c:forEach var="result" items="${results}">
                 <div class="row">
-                    <div class="col-1"><span class="fs-6">E-0233</span></div>
+                    <div class="col-2"><span class="fs-6">${result.subjectCode}</span></div>
                     <div class="col"><span class="fs-6">${result.subjectName}</span></div>
                     <div class="col-1 text-center"><span class="fs-6">${result.subjectCreditUnits}</span></div>
                     <div class="col-1 text-center"><span class="fs-6">${result.grade}</span></div>

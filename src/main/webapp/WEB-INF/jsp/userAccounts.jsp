@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!doctype html>
 <html lang="en">
 
@@ -122,7 +124,7 @@ pageEncoding="ISO-8859-1"%>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="/profile">Profile</a>
-                  <a class="dropdown-item" href="#">Logout</a>
+                  <a class="dropdown-item" href="/creditLogin">Logout</a>
                 </div>
               </li>
             </ul>
@@ -136,30 +138,21 @@ pageEncoding="ISO-8859-1"%>
             <!-- <h3 class="description">Your content here</h3> -->
             <div class="container bg-white col-md-10 mb-5 shadow-sm bg-opacity-75 p-5">
                 <form action="/saveUserData", method="post" modelAttribute="saveUserData">
-                    <%--<c:if test="${not empty successMessage}">
-                        <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
-                    </c:if>
-                    <c:if test="${not empty studentIdError}">
-                        <div id="studentIdError" class="alert alert-danger" role="alert">${studentIdError}</div>
-                    </c:if>
-                    <c:if test="${not empty teacherIdError}">
-                        <div id="teacherIdError" class="alert alert-danger" role="alert">${teacherIdError}</div>
-                    </c:if>
-                    <c:if test="${not empty serverError}">
-                        <div id="errorMessage" class="alert alert-danger" role="alert">${serverError}</div>
-                    </c:if>--%>
-                    <c:if test="${not empty successMessage}">
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <div id="just-show">
+                        <c:if test="${not empty successMessage}">
+                            <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
+                        </c:if>
+                        <c:if test="${not empty studentIdError}">
+                            <div id="studentIdError" class="alert alert-danger" role="alert">${studentIdError}</div>
+                        </c:if>
+                        <c:if test="${not empty teacherIdError}">
+                            <div id="teacherIdError" class="alert alert-danger" role="alert">${teacherIdError}</div>
+                        </c:if>
+                        <c:if test="${not empty serverError}">
+                            <div id="errorMessage" class="alert alert-danger" role="alert">${serverError}</div>
+                        </c:if>
+                </div>
 
-                        <strong>${successMessage}</strong>
-
-
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    </c:if>
-                        <script>
-                            document.getElementById("successMessage")
-                        </script>
                     <div class="col-md-10 offset-1 mb-3">
                         <label for="name" class="mb-1">User Name</label>
                         <input path="name" required type="text" id="name" name="name" class="form-control"
@@ -180,19 +173,6 @@ pageEncoding="ISO-8859-1"%>
                         <textarea path="address" required name="address" id="address" cols="60" rows="10" class="form-control" placeholder="Enter user's address..."></textarea>
                     </div>
 
-                    <!--
-                    <div class="col-md-10 offset-1 mb-3">
-                      <label for="fatherName" class="mb-1">Father Name</label>
-                      <input type="text" id="fatherName" name="fatherName" class="form-control"
-                          placeholder="Enter father name...">
-                  </div>
-                  <div class="col-md-10 offset-1 mb-3">
-                    <label for="startDate" class="mb-1">Start Date</label>
-                    <input type="date" id="startDate" name="startDate" class="form-control">
-                </div> -->
-               
-                    
-                    
                     <div class="col-md-10 offset-1 mb-3">
                       <%--@declare id="usertype"--%><label  path="userType" for="userType" class="mb-1">Role</label>
                      
@@ -269,15 +249,13 @@ pageEncoding="ISO-8859-1"%>
                     </div>--%>
 
                 </form>
-               <%-- <script>
-                    window.alert("Successfully Save!");
-                </script>--%>
 
             </div>
           </div>
         </div>
       </div>
-        <c:remove var="successMessage" scope="session" />
+
+
       <!-- <footer class="footer" style="position: absolute; bottom: 0; width: -webkit-fill-available;">
         <div class="container-fluid">
           <div class="row">

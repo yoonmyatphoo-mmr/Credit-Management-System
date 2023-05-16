@@ -1,6 +1,7 @@
 package com.ymp.schoolcreditsystemversion1.repository;
 
 import com.ymp.schoolcreditsystemversion1.model.entity.StudentDetail;
+import com.ymp.schoolcreditsystemversion1.model.entity.Subject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,6 +24,7 @@ public interface StudentDetailRepository extends JpaRepository<StudentDetail,Str
     List<StudentDetail> findByStudentIdentity(String studentIdentity);
 
     List<StudentDetail> findByYearIdAndSemesterIdAndMajorId(String year,String semester, String major);
+
 
 
 }

@@ -41,35 +41,43 @@
                 <div class="card-title">
                     <!-- <h3 class="text-center">Account Profile</h3> -->
                 </div>
-                <form action="/viewSubjectList" method="post">
+                <form action="/viewSubject" method="post">
+                    <div id="just-show">
+                        <c:if test="${not empty message}">
+                            <div id="message" class="alert alert-danger" role="alert">${message}</div>
+                        </c:if>
+                        <c:if test="${not empty no_exit}">
+                            <div id="no_exit" class="alert alert-danger" role="alert">${no_exit}</div>
+                        </c:if>
+                        <c:if test="${not empty success}">
+                            <div id="success" class="alert alert-danger" role="alert">${success}</div>
+                        </c:if>
+                    </div>
                     <div class="row">
                         <div class=" col-10 offset-1 ">
 
                             <div class="form-group mt-2">
                                 <select name="yearId" class="form-select shadow-sm">
-                                    <option value=>Year </option>
-                                    <option value="First Year">First Year</option>
-                                    <option value="Second Year">Second Year</option>
-                                    <option value="Third Year">Third Year</option>
-                                    <option value="Fourth Year">Fourth Year</option>
-                                    <option value="Fifth Year">Fifth Year</option>
+                                    <option value="First Year" ${selectedYearId == 'First Year' ? 'selected' : ''}>First Year</option>
+                                    <option value="Second Year" ${selectedYearId == 'Second Year' ? 'selected' : ''}>Second Year</option>
+                                    <option value="Third Year" ${selectedYearId == 'Third Year' ? 'selected' : ''}>Third Year</option>
+                                    <option value="Fourth Year" ${selectedYearId == 'Fourth Year' ? 'selected' : ''}>Fourth Year</option>
+                                    <option value="Fifth Year" ${selectedYearId == 'Fifth Year' ? 'selected' : ''}>Fifth Year</option>
                                 </select>
 
                             </div>
 
                             <div class="form-group mt-2">
                                 <select name="semesterId" class="form-select shadow-sm">
-                                    <option value=>Semester </option>
-                                    <option value="First Semester">First Semester</option>
-                                    <option value="Second Semester">Second Semester</option>
+                                    <option value="First Semester" ${selectedSemesterId == 'First Semester' ? 'selected' : ''}>First Semester</option>
+                                    <option value="Second Semester" ${selectedSemesterId == 'Second Semester' ? 'selected' : ''}>Second Semester</option>
                                 </select>
                             </div>
 
                             <div class="form-group mt-2">
                                 <select name="majorId" class="form-select shadow-sm">
-                                    <option value=>Major </option>
-                                    <option value="Computer Science">Computer Science</option>
-                                    <option value="Computer Technology">Computer Technology</option>
+                                    <option value="Computer Science" ${selectedMajorId == 'Computer Science' ? 'selected' : ''}>Computer Science</option>
+                                    <option value="Computer Technology" ${selectedMajorId == 'Computer Technology' ? 'selected' : ''}>Computer Technology</option>
                                 </select>
 
                             </div>
@@ -94,6 +102,7 @@
                 <table class="table table-success table-striped" >
                     <thead>
                     <tr>
+                        <th scope="col">Id</th>
                         <th scope="col">Year</th>
                         <th scope="col">Semester</th>
                         <th scope="col">Major</th>
@@ -107,13 +116,19 @@
                     <tbody>
                     <c:forEach items="${viewSubject}" var="subjectList">
                         <tr>
+                            <td>${subjectList.id}</td>
                             <td>${subjectList.yearId}</td>
                             <td>${subjectList.semesterId}</td>
                             <td>${subjectList.majorId}</td>
                             <td>${subjectList.subjectName}</td>
                             <td>${subjectList.subjectCode}</td>
-                            <td><a href="#" class="btn btn-success">Edit</a></td>
-                            <td><a href="#" class="btn btn-danger">Delete</a></td>
+                            <td><a href="/editSubject?id=${subjectList.id}&amp;subjectName=${java.net.URLEncoder.encode(subjectList.subjectName, 'UTF-8')}&amp;subjectCode=${subjectList.subjectCode}&amp;yearId=${subjectList.yearId}&amp;semesterId=${subjectList.semesterId}&amp;majorId=${subjectList.majorId}" class="btn btn-success">Edit</a></td>
+                            <td>
+                                <form action="/deleteSubject" method="POST">
+                                    <input type="hidden" name="id" value="${subjectList.id}" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>

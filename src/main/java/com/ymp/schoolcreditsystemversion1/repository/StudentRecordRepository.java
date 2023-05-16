@@ -28,4 +28,5 @@ public interface StudentRecordRepository extends JpaRepository<StudentRecord, Lo
     int getTotalGradePointForSemesterAndStudent(@Param("studentIdentity") String studentIdentity, @Param("semester") String semester);
 */
 
+    StudentRecord findByStudentIdentityAndYearIdAndSemesterIdAndMajorId(String studentId,String yearId,String semesterId,String majorId);
 }

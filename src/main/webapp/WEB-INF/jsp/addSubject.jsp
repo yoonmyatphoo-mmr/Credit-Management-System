@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html lang="en">
 
@@ -105,16 +106,6 @@
                 </button>
 
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                    <form>
-                        <div class="input-group no-border">
-                            <input type="text" value="" class="form-control" placeholder="Search...">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <i class="nc-icon nc-zoom-split"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
                     <ul class="navbar-nav">
                         <li class="nav-item btn-rotate">
                             <div class="d-lg-none btn col-md-5 text-start"><i class="fa-solid fa-users mr-2"></i>User
@@ -135,9 +126,8 @@
                                 </p>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="/profile">Profile</a>
+                                <a class="dropdown-item" href="/creditLogin">Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -152,10 +142,19 @@
                     <div class="container bg-white col-md-10 mb-5 shadow-sm bg-opacity-75 p-5">
 
                         <form id="add-subject-form" action="/insertSubject" method="post" modelAttribute="addSubject">
+                            <div id="just-show">
+                                <c:if test="${not empty emptySubject}">
+                                    <div class="alert alert-danger">${emptySubject}</div>
+                                </c:if>
 
-                            <c:if test="${not empty successMessage}">
-                            <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
-                            </c:if>
+                                <c:if test="${not empty successSubject}">
+                                    <div class="alert alert-success">${successSubject}</div>
+                                </c:if>
+
+                                <c:if test="${not empty errorSubject}">
+                                    <div class="alert alert-danger">${errorSubject}</div>
+                                </c:if>
+                            </div>
 
                         <div class="col-md-10 offset-1 mb-3">
                                 <label for="subjectCode" class="mb-1">subject Code</label>
