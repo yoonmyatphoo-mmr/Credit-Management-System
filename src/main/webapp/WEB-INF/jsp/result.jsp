@@ -34,6 +34,16 @@
                 font-size: 11px;
             }
         }
+        @media screen and (min-width: 500px) {
+            span.edit{
+                font-size: 12px;
+            }
+        }
+        @media screen and (min-width: 800px) {
+            span.edit{
+                font-size: 16px;
+            }
+        }
         .crisom-text{
             font-size: 20px;
         }
@@ -45,6 +55,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 </head>
 <body>
+<div class="row  m-4">
+    <div class="col-3 text-center">
+        <a href="/userAccounts">
+            <button class="btn bg-dark text-white col-3 w-75"><i class="fa-solid fa-arrow-left"></i> Back</button>
+        </a>
+    </div>
+</div>
+
 <form class="container border border-dark">
     <div class="row">
         <div class="col-2"><img src="download.png" class="img-fluid" width="100%" height="auto"></div>
@@ -73,19 +91,19 @@
                 <div class="col-3"><span class="crimson-text">${results[0].studentIdentity}</span></div>
             </div>
             <div class="row">
-                <div class="col-1"><span class="crimson-text">Year</span></div>
-                <div class="col"><span class="crimson-text">${results[0].yearId} ${results[0].majorId} (2019-2020) Academic Year</span></div>
+<%--                <div class="col-1"><span class="crimson-text">Year</span></div>--%>
+                <div class="col text-center"><span class="crimson-text">${results[0].yearId} ${results[0].majorId} (2019-2020) Academic Year</span></div>
             </div>
             <div class="row">
                 <div class="col text-center"><span class="crimson-text">${results[0].semesterId} (GPA Sheet)</span></div>
             </div>
-            <div class="row bg-light">
-                <div class="col-1"><span class="crimson-text">Subject Code</span></div>
-                <div class="col"><span class="crimson-text">Subject Name</span></div>
-                <div class="col-1"><span class="crimson-text">Credit Unit</span></div>
-                <div class="col-1"><span class="crimson-text">Grade</span></div>
-                <div class="col-1"><span class="crimson-text">Grade Score</span></div>
-                <div class="col-1"><span class="crimson-text">Grade Point</span></div>
+            <div class="row bg-light fw-bold">
+                <div class="col-2"><span class="crimson-text edit">Subject Code</span></div>
+                <div class="col"><span class="crimson-text edit">Subject Name</span></div>
+                <div class="col-1"><span class="crimson-text edit">Credit Unit</span></div>
+                <div class="col-1"><span class="crimson-text edit">Grade</span></div>
+                <div class="col-1"><span class="crimson-text edit">Grade Score</span></div>
+                <div class="col-1"><span class="crimson-text edit">Grade Point</span></div>
             </div>
             <c:set var="totalCreditUnit" value="0" />
             <c:set var="totalGradePoint" value="0" />

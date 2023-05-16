@@ -25,7 +25,7 @@
                 <input type="hidden" name="yearId" value="${selectedYearId}">
                 <input type="hidden" name="semesterId" value="${selectedSemesterId}">
                 <input type="hidden" name="majorId" value="${selectedMajorId}">
-                <button class="btn bg-dark text-white col-3" type="submit"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <button class="btn w-75 bg-dark text-white col-3" type="submit"><i class="fa-solid fa-arrow-left"></i> Back</button>
             </form>
         </div>
     </div>
@@ -45,19 +45,19 @@
                                 <div id="message" class="alert alert-danger" role="alert">${errorMessage}</div>
                             </c:if>
                             <c:if test="${not empty successMessage}">
-                                <div id="successMessage" class="alert alert-danger" role="alert">${successMessage}</div>
+                                <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
                             </c:if>
                         </div>
                         <div class="row">
                             <div class="col-10 offset-1">
                                 <div class="form-group mt-2">
                                     <label class="control-label mb-1 fw-medium" for="studentIdentity">Student Identity</label>
-                                    <input class="form-control fw-normal shadow-sm" id="studentIdentity" name="studentIdentity" type="text" value="${studentDetail.studentIdentity}">
+                                    <input class="form-control fw-normal shadow-sm" id="studentIdentity" name="studentIdentity" readonly type="text" value="${studentDetail.studentIdentity}">
                                 </div>
 
                                 <div class="form-group mt-2">
                                     <label class="control-label mb-1 fw-medium" for="name">Name</label>
-                                    <input class="form-control fw-normal shadow-sm" id="name" name="name" type="text" value="${studentDetail.name}">
+                                    <input class="form-control fw-normal shadow-sm" id="name" name="name" type="text" readonly value="${studentDetail.name}">
                                 </div>
 
                                 <div class="form-group mt-2">
@@ -89,6 +89,7 @@
                                     </select>
 <%--                                    <input class="form-control fw-normal shadow-sm" id="majorId" name="majorId" type="text" value="${studentDetail.majorId}">--%>
                                 </div>
+                                <br>
 
                                 <button type="submit" class="btn btn-primary">Edit</button>
                             </div>

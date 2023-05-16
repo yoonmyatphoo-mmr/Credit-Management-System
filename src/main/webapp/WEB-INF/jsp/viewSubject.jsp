@@ -100,6 +100,7 @@
 
 <div class="container mt-5">
                 <table class="table table-success table-striped" >
+                    <div class="row">
                     <thead>
                     <tr>
                         <th scope="col">Id</th>
@@ -107,12 +108,14 @@
                         <th scope="col">Semester</th>
                         <th scope="col">Major</th>
                         <th scope="col">Subject Name</th>
-                        <th scope="col">Subject Code</th>
+                        <th scope="col-3">Subject Code</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
 
+
                     </tr>
                     </thead>
+                    </div>
                     <tbody>
                     <c:forEach items="${viewSubject}" var="subjectList">
                         <tr>

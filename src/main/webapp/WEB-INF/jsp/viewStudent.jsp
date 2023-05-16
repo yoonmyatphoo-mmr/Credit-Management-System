@@ -21,7 +21,7 @@
 <div class="row  m-4">
     <div class="col-3 text-center">
         <a href="/userAccounts">
-            <button class="btn bg-dark text-white col-3 "><i class="fa-solid fa-arrow-left"></i> Back</button>
+            <button class="btn w-50 bg-dark text-white col-3 "><i class="fa-solid fa-arrow-left"></i> Back</button>
         </a>
     </div>
 </div>

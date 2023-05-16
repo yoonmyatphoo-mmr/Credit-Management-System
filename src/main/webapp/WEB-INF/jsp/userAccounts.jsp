@@ -110,16 +110,28 @@ pageEncoding="ISO-8859-1"%>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
             <ul class="navbar-nav">
                 <li class="nav-item btn-rotate">
-                    <div class="d-lg-none btn col-md-5 text-start"><i class="fa-solid fa-users mr-2"></i>User Accounts</div>
+                    <div class="text-success d-lg-none btn col-md-5 text-end"><i class="fa-solid fa-users mr-2"></i>User Accounts</div>
                 </li>
                 <li class="nav-item btn-rotate">
-                    <div class="d-lg-none btn col-md-5 text-start"><i class="fa-solid fa-user-graduate me-2"></i>Student Information</div>
+                    <div class="text-success d-lg-none btn col-md-5 text-end"><i class="fa-solid fa-user-graduate me-2"></i>Student Information</div>
                 </li>
-              <li class="nav-item btn-rotate dropdown">
+                <li class="nav-item btn-rotate">
+                    <div class="text-success d-lg-none btn col-md-5 text-end"><i class="fa-solid fa-user-graduate me-2"></i>Student Information</div>
+                </li>
+                <li class="nav-item btn-rotate">
+                    <div class="text-success d-lg-none btn col-md-5 text-end"><i class="fa-solid fa-user-graduate me-2"></i>Student Information</div>
+                </li>
+                <li class="nav-item btn-rotate">
+                    <div class="text-success d-lg-none btn col-md-5 text-end"><i class="fa-solid fa-user-graduate me-2"></i>Student Information</div>
+                </li>
+                <li class="nav-item btn-rotate">
+                    <div class="text-success d-lg-none btn col-md-5 text-end"><i class="fa-solid fa-user-graduate me-2"></i>Student Information</div>
+                </li>
+              <li class="nav-item btn-rotate dropdown text-end">
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa-solid fa-user"></i>
                   <p>
-                    <span class="d-lg-none d-md-block">Options</span>
+                    <span class="text-success d-lg-none d-md-block">Options</span>
                   </p>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">

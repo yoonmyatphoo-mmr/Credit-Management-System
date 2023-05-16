@@ -42,14 +42,14 @@
                     <form action="saveSubject" method="POST" modelAttribute="subjectList">
                         <div id="just-show">
                             <c:if test="${not empty successMessage}">
-                                <div id="successMessage" class="alert alert-danger" role="alert">${successMessage}</div>
+                                <div id="successMessage" class="alert alert-success" role="alert">${successMessage}</div>
                             </c:if>
                         </div>
                         <div class="row">
                             <div class="col-10 offset-1">
                                 <div class="form-group mt-2">
                                     <label class="control-label mb-1 fw-medium" for="id">ID</label>
-                                    <input class="form-control fw-normal shadow-sm" id="id" name="id" type=text value="${subjectList.id}">
+                                    <input class="form-control fw-normal shadow-sm" readonly id="id" name="id" type=text value="${subjectList.id}">
                                 </div>
 
                                 <div class="form-group mt-2">
